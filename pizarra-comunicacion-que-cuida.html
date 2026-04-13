@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Comunicación que cuida — AP SMT</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ap:#0066FF;--ap2:#2EB1FF;--apy:#F4DC00;--r:14px;--r2:9px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4ff;color:#1a1a2e;min-height:100vh;padding-bottom:40px}
+.scr{display:none}.scr.on{display:block}
+.hdr{background:var(--ap);padding:22px 20px 28px;color:#fff}
+.hdr-tag{font-size:11px;font-weight:600;color:#aaccff;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.hdr h1{font-size:22px;font-weight:700;line-height:1.3}
+.hdr p{font-size:13px;color:#cce;margin-top:5px}
+.hdrbadge{display:inline-block;font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;margin-top:8px}
+.hf{background:rgba(255,255,255,.15);color:#fff}
+.hp{background:var(--apy);color:#1a1a00}
+.cnt{padding:18px}
+.card{background:#fff;border-radius:var(--r);border:1px solid #e2e8f0;padding:16px;margin-bottom:12px}
+.clabel{font-size:11px;font-weight:700;color:var(--ap);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
+.tbtn{width:100%;background:#fff;border:1px solid #e2e8f0;border-radius:var(--r);padding:14px;margin-bottom:9px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;transition:border-color .15s;-webkit-tap-highlight-color:transparent}
+.tbtn:active{background:#f0f6ff;border-color:var(--ap)}
+.tbtn.sel{border-color:var(--ap);background:#e8f0ff}
+.tnum{width:36px;height:36px;background:var(--ap);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+.tinfo strong{display:block;font-size:14px;font-weight:700;color:#1a1a2e}
+.tinfo span{font-size:12px;color:#6b7280}
+.pbtn{width:100%;background:var(--ap);color:#fff;border:none;border-radius:var(--r);padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:5px;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
+.pbtn:active{opacity:.85}
+.pbtn:disabled{opacity:.35;cursor:default}
+.sbtn{width:100%;background:#fff;color:var(--ap);border:2px solid var(--ap);border-radius:var(--r);padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
+.bbtn{background:none;border:none;color:#aaccff;font-size:13px;cursor:pointer;font-family:inherit;padding:0;margin-bottom:10px;display:flex;align-items:center;gap:3px}
+.tabs{display:flex;gap:6px;margin-bottom:14px}
+.tab{flex:1;padding:9px 4px;border-radius:var(--r2);border:1px solid #e2e8f0;background:#fff;font-size:12px;font-weight:700;color:#6b7280;cursor:pointer;text-align:center;font-family:inherit;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.tab.on{background:var(--ap);color:#fff;border-color:var(--ap)}
+.scard{background:#fff;border-radius:var(--r);overflow:hidden;margin-bottom:12px;border:1px solid #e2e8f0}
+.shdr{background:var(--ap);padding:12px 15px;display:flex;align-items:center;gap:10px}
+.snum{width:27px;height:27px;background:rgba(255,255,255,.2);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.stitle{font-size:14px;font-weight:700;color:#fff;line-height:1.3}
+.sbody{padding:13px 15px}
+.slbl{font-size:11px;font-weight:700;color:var(--ap);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.stxt{font-size:13px;line-height:1.65;color:#1a1a2e}
+.sconsigna{background:#f0f4ff;border-top:1px solid #e2e8f0;padding:11px 15px;font-size:13px;color:#1a3a88;font-style:italic;line-height:1.55}
+.pizarra{display:flex;flex-wrap:wrap;gap:9px;margin-top:10px}
+.nota{background:#fffde7;border:1px solid #f4dc00;border-radius:var(--r2);padding:12px;font-size:13px;line-height:1.55;color:#333300;flex:1;min-width:calc(50% - 5px);animation:pop .25s ease}
+.nota.wn{border-color:#aaccff;background:#f0f6ff;color:#0a2a66;min-width:100%}
+.nota .nn{font-size:11px;font-weight:700;color:var(--ap);margin-bottom:4px}
+@keyframes pop{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:scale(1)}}
+.counter{display:flex;align-items:center;justify-content:space-between;background:#e8f0ff;border-radius:var(--r2);padding:10px 14px;margin-bottom:12px}
+.counter span{font-size:13px;color:var(--ap);font-weight:600}
+.counter strong{font-size:20px;color:var(--ap);font-weight:700}
+.dot{width:7px;height:7px;border-radius:50%;background:#22cc88;display:inline-block;margin-right:5px;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+textarea{width:100%;border:2px solid #e2e8f0;border-radius:var(--r2);padding:12px;font-size:14px;font-family:inherit;resize:none;outline:none;color:#1a1a2e;line-height:1.65;margin-top:6px;background:#fff}
+textarea:focus{border-color:var(--ap)}
+.sent{background:#e8fff3;border:1px solid #a0e6c0;border-radius:var(--r2);padding:14px;text-align:center;color:#1a6640;font-size:14px;font-weight:600;margin-top:10px}
+.sitnav{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap}
+.sdot{width:32px;height:32px;border-radius:var(--r2);border:1px solid #e2e8f0;background:#fff;font-size:12px;font-weight:700;color:#6b7280;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.sdot.on{background:var(--ap);color:#fff;border-color:var(--ap)}
+.sdot.done{background:#e8f0ff;color:var(--ap);border-color:#aaccff}
+.codinput{width:100%;border:2px solid #e2e8f0;border-radius:var(--r2);padding:12px 14px;font-size:24px;letter-spacing:.2em;text-align:center;font-family:inherit;outline:none;color:#1a1a2e;background:#fff;margin-top:6px}
+.codinput:focus{border-color:var(--ap)}
+.pbar{height:3px;background:rgba(255,255,255,.2);border-radius:2px;margin-top:10px;overflow:hidden}
+.pfill{height:100%;background:var(--apy);border-radius:2px;transition:width .4s}
+.codlist{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+.coditem{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #e2e8f0;border-radius:var(--r2);padding:10px 14px}
+.coditem span{font-size:14px;font-weight:700;letter-spacing:.06em}
+.coditem small{font-size:12px;color:#6b7280}
+.diagcard{background:#fff;border-left:3px solid var(--ap);border-radius:0 var(--r2) var(--r2) 0;border-top:1px solid #e2e8f0;border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:11px 13px;margin-bottom:8px}
+.diagtit{font-size:11px;font-weight:700;color:var(--ap);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.diagtxt{font-size:13px;line-height:1.55;color:#1a1a2e}
+input[type=text],input[type=password]{width:100%;border:2px solid #e2e8f0;border-radius:var(--r2);padding:11px 13px;font-size:15px;font-family:inherit;outline:none;color:#1a1a2e;background:#fff;margin-top:6px}
+input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
+.tag{display:inline-block;font-size:11px;padding:2px 9px;border-radius:10px;font-weight:700}
+.tok{background:#e8fff3;color:#1a6640}
+.empty{text-align:center;padding:24px 16px;color:#6b7280;font-size:13px}
+.errtxt{font-size:13px;color:#cc2222;margin-top:8px;display:none}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+<div class="scr on" id="s-inicio">
+  <div class="hdr">
+    <div class="hdr-tag">Asistencia Pública SMT</div>
+    <h1>Comunicación<br>que cuida</h1>
+    <p>Pizarra colaborativa · Ciclo de talleres</p>
+  </div>
+  <div class="cnt">
+    <p style="font-size:14px;color:#6b7280;margin-bottom:18px;line-height:1.6">¿Cómo vas a participar?</p>
+    <button class="tbtn" onclick="go('s-fac-login')">
+      <div class="tnum" style="background:#1a1a2e">F</div>
+      <div class="tinfo"><strong>Facilitadora</strong><span>Controlo el taller · acceso con contraseña</span></div>
+    </button>
+    <button class="tbtn" onclick="go('s-par-login')">
+      <div class="tnum">P</div>
+      <div class="tinfo"><strong>Participante</strong><span>Ingreso con mi código personal</span></div>
+    </button>
+  </div>
+</div>
+
+<div class="scr" id="s-fac-login">
+  <div class="hdr">
+    <div class="hdrbadge hf">Facilitadora</div>
+    <h1 style="margin-top:8px">Acceso</h1>
+  </div>
+  <div class="cnt">
+    <div class="card">
+      <div class="clabel">Contraseña</div>
+      <input type="password" id="fac-pass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')facLogin()">
+      <button class="pbtn" style="margin-top:12px" onclick="facLogin()">Entrar</button>
+      <p class="errtxt" id="fac-err">Contraseña incorrecta</p>
+    </div>
+    <button class="sbtn" onclick="go('s-inicio')">Volver</button>
+  </div>
+</div>
+
+<div class="scr" id="s-fac-main">
+  <div class="hdr">
+    <div class="hdrbadge hf">Facilitadora</div>
+    <h1 style="margin-top:8px">Panel de control</h1>
+    <p id="fac-estado-txt">Sin taller activo</p>
+  </div>
+  <div class="cnt">
+    <div class="tabs">
+      <button class="tab on" id="ftab-talleres" onclick="ftab('talleres')">Talleres</button>
+      <button class="tab" id="ftab-codigos" onclick="ftab('codigos')">Códigos</button>
+      <button class="tab" id="ftab-pizarra" onclick="ftab('pizarra')">Pizarra</button>
+      <button class="tab" id="ftab-diagnostico" onclick="ftab('diagnostico')">Diagnóstico</button>
+    </div>
+    <div id="ft-talleres"><div id="lista-talleres"></div></div>
+    <div id="ft-codigos" style="display:none">
+      <div class="card">
+        <div class="clabel">Códigos activos</div>
+        <p style="font-size:13px;color:#6b7280;margin-bottom:10px;line-height:1.5">Asigná un código a cada participante antes de empezar.</p>
+        <div class="codlist" id="codlist"></div>
+      </div>
+      <div class="card">
+        <div class="clabel">Agregar código</div>
+        <input type="text" id="nuevo-cod" placeholder="ej: AZUL, P1, LUNA..." onkeydown="if(event.key==='Enter')agregarCod()">
+        <button class="pbtn" style="margin-top:10px" onclick="agregarCod()">Agregar</button>
+      </div>
+    </div>
+    <div id="ft-pizarra" style="display:none"><div id="fac-pizarra-content"></div></div>
+    <div id="ft-diagnostico" style="display:none"><div id="fac-diag-content"></div></div>
+  </div>
+</div>
+
+<div class="scr" id="s-fac-taller">
+  <div class="hdr">
+    <button class="bbtn" onclick="go('s-fac-main')">← Panel</button>
+    <div class="hdrbadge hf">Facilitadora</div>
+    <h1 style="margin-top:6px" id="fac-t-titulo"></h1>
+    <div class="pbar"><div class="pfill" id="fac-pbar"></div></div>
+  </div>
+  <div class="cnt">
+    <div class="tabs">
+      <button class="tab on" id="fttab-sit" onclick="fttab('sit')">Situación</button>
+      <button class="tab" id="fttab-muro" onclick="fttab('muro')">Pizarra</button>
+      <button class="tab" id="fttab-diag" onclick="fttab('diag')">Diagnóstico</button>
+    </div>
+    <div id="ftt-sit">
+      <div class="sitnav" id="fac-sitnav"></div>
+      <div id="fac-sitdetail"></div>
+    </div>
+    <div id="ftt-muro" style="display:none">
+      <div class="counter"><span><span class="dot"></span>Respuestas en vivo</span><strong id="muro-count">0</strong></div>
+      <div class="pizarra" id="fac-muro-notas"></div>
+    </div>
+    <div id="ftt-diag" style="display:none"><div id="fac-diag-sit"></div></div>
+  </div>
+</div>
+
+<div class="scr" id="s-par-login">
+  <div class="hdr">
+    <div class="hdrbadge hp">Participante</div>
+    <h1 style="margin-top:8px">Ingresá tu código</h1>
+    <p>Tu facilitadora te asignó un código personal</p>
+  </div>
+  <div class="cnt">
+    <div class="card">
+      <div class="clabel">Tu código</div>
+      <input class="codinput" id="par-cod" placeholder="CÓDIGO" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')parLogin()">
+      <button class="pbtn" style="margin-top:14px" onclick="parLogin()">Entrar</button>
+      <p class="errtxt" id="par-err">Código no válido. Pedile a la facilitadora que lo active.</p>
+    </div>
+    <button class="sbtn" onclick="go('s-inicio')">Volver</button>
+  </div>
+</div>
+
+<div class="scr" id="s-par-espera">
+  <div class="hdr">
+    <div class="hdrbadge hp">Participante</div>
+    <h1 style="margin-top:8px" id="par-espera-cod"></h1>
+    <p>Esperando que la facilitadora active el taller</p>
+  </div>
+  <div class="cnt">
+    <div class="card" style="text-align:center;padding:30px 16px">
+      <div style="width:50px;height:50px;border-radius:50%;background:#e8f0ff;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:22px">⏳</div>
+      <p style="font-size:14px;color:#6b7280;line-height:1.6">Cuando tu facilitadora active una situación, aparecerá acá automáticamente.</p>
+    </div>
+  </div>
+</div>
+
+<div class="scr" id="s-par-activa">
+  <div class="hdr">
+    <div class="hdrbadge hp">Participante</div>
+    <h1 style="margin-top:6px" id="par-taller-n"></h1>
+    <p id="par-sit-n" style="color:#aaccff;font-size:13px;margin-top:3px"></p>
+    <div class="pbar"><div class="pfill" id="par-pbar"></div></div>
+  </div>
+  <div class="cnt">
+    <div id="par-sit-card"></div>
+    <div class="tabs">
+      <button class="tab on" id="ptab-escribir" onclick="partab('escribir')">Escribir</button>
+      <button class="tab" id="ptab-pizarra" onclick="partab('pizarra')">Ver pizarra</button>
+    </div>
+    <div id="pt-escribir">
+      <div id="par-input-area">
+        <textarea id="par-resp" placeholder="Escribí tu respuesta acá..." rows="4"></textarea>
+        <button class="pbtn" onclick="enviarResp()">Enviar respuesta</button>
+      </div>
+      <div id="par-sent" style="display:none">
+        <div class="sent">¡Respuesta enviada! Podés ver la pizarra del grupo.</div>
+        <button class="pbtn" style="margin-top:10px" onclick="partab('pizarra')">Ver pizarra del grupo</button>
+      </div>
+    </div>
+    <div id="pt-pizarra" style="display:none">
+      <div class="counter"><span><span class="dot"></span>Respuestas del grupo</span><strong id="par-muro-count">0</strong></div>
+      <div class="pizarra" id="par-muro-notas"></div>
+      <p style="font-size:12px;color:#6b7280;margin-top:8px;text-align:center">Las respuestas son anónimas para el grupo</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const FAC_PASS = "AP2026";
+const STORAGE_KEY = "ap-taller-v1";
+const TALLERES = [
+  {id:1,nombre:"El primer eslabón",sub:"Calidad del trato y proceso de atención",sits:[
+    {t:"Orden vencida",e:"Un paciente llega con una orden médica vencida hace 15 días para una ecografía. Está alterado porque vino desde lejos y dice que nadie le avisó que tenía fecha de vencimiento.",c:"¿Cómo le explicarían la situación sin que sienta que lo están rechazando? ¿Qué alternativa le ofrecerían?"},
+    {t:"Llegada tarde al turno",e:"Un paciente llega 25 minutos después de su turno. El médico ya atiende al siguiente. Insiste en que son solo unos minutos y que no puede volver otro día.",c:"¿Cómo comunican la imposibilidad de atenderlo sin que escale la situación?"},
+    {t:"Receta vencida",e:"Una señora mayor presenta una receta vencida para retirar medicación crónica. Dice que su médico siempre se la renueva igual y no entiende por qué ahora es un problema.",c:"¿Cómo explican el procedimiento correcto sin que sienta que la envían de vuelta a cero?"},
+    {t:"Estudio sin orden",e:"Un paciente pide una radiografía porque el médico del trabajo me lo pidió de palabra. No tiene ninguna orden escrita.",c:"¿Cuál es la respuesta correcta? ¿Cómo la comunican para que el paciente comprenda sin sentirse discriminado?"},
+    {t:"Cobertura no habilitada",e:"Un paciente llega con obra social pero la cobertura no está habilitada en el sistema. Insiste en que siempre le cubren y amenaza con quejarse.",c:"¿Cómo manejan la información técnica sin entrar en una discusión?"}
+  ]},
+  {id:2,nombre:"Misma cancha, mismo arco",sub:"Unificación de criterios y protocolos",sits:[
+    {t:"Respuestas inconsistentes",e:"Una paciente vuelve porque ayer le dijeron algo diferente sobre su turno. Dice que cada una le dice una cosa distinta.",c:"¿Por qué pasa esto? ¿Qué necesitaría el equipo para que no vuelva a ocurrir?"},
+    {t:"¿Quién decide?",e:"Llega un pedido que no está claro si pueden resolver desde admisión o requiere intervención médica. No hay criterio definido.",c:"¿Cómo deciden qué hacer? ¿Quién debería tener la última palabra?"},
+    {t:"El turno doble",e:"Dos pacientes aparecen con turno para el mismo horario con el mismo médico. Hay un error en el sistema.",c:"¿Cómo manejan la situación con los pacientes? ¿Y entre ustedes después?"},
+    {t:"El protocolo que no existe",e:"Surge una situación frecuente que nadie documentó. Cada una lo resuelve a su modo.",c:"¿Cuáles son las situaciones que necesitarían tener un criterio escrito y acordado?"}
+  ]},
+  {id:3,nombre:"El equipo somos nosotras",sub:"Trabajo en equipo y organización cotidiana",sits:[
+    {t:"Semáforo verde",e:"Pensá en el equipo tal como funciona hoy. ¿Qué está funcionando bien? ¿Qué harías exactamente igual?",c:"Escribí una cosa concreta que el equipo hace bien y que vale la pena cuidar."},
+    {t:"Semáforo amarillo",e:"¿Qué aspecto del trabajo cotidiano te genera incomodidad, pero que todavía no llegó a ser un problema grave?",c:"Describí esa situación. ¿Qué pequeño cambio la mejoraría?"},
+    {t:"Semáforo rojo",e:"¿Hay algo en la dinámica del equipo que sentís que necesita cambiar sí o sí?",c:"Nombralo. ¿Qué cambio concreto propondrías?"},
+    {t:"El desayuno de 20 minutos",e:"El desayuno compartido existe, pero no siempre se aprovecha como momento de coordinación.",c:"¿Cómo podría transformarse en un momento que le sirva al equipo?"}
+  ]},
+  {id:4,nombre:"Con el médico también se habla",sub:"Comunicación con el equipo médico",sits:[
+    {t:"El paciente sin turno",e:"Un paciente insiste en hablar con el médico sin turno porque es urgente. El médico está en consulta.",c:"¿Qué le dicen al paciente? ¿Y al médico?"},
+    {t:"La orden poco clara",e:"Un médico dejó una indicación que admisión no entiende bien. Tiene fama de responder mal cuando lo interrumpen.",c:"¿Cómo se lo plantearían para que la comunicación no escale?"},
+    {t:"El pedido que excede el rol",e:"Un médico pide a admisión que haga algo que no corresponde a sus funciones. No es la primera vez.",c:"¿Cómo se pone ese límite de forma clara y sin dañar el vínculo?"},
+    {t:"La queja al médico",e:"Un médico llega molesto porque un paciente dijo que lo trataron mal. El equipo siente que no fue así.",c:"¿Cómo manejan esa conversación? ¿Qué dirían y qué evitarían decir?"}
+  ]},
+  {id:5,nombre:"Hablar bien es trabajar bien",sub:"Comunicación sin ruido y estándares de calidad",sits:[
+    {t:"El mensaje que se deformó",e:"Una indicación importante pasó por cuatro personas. Cuando llegó era diferente a lo original.",c:"¿Por qué pasa esto? ¿Qué técnica simple lo hubiera evitado?"},
+    {t:"La urgencia mal comunicada",e:"Una situación urgente requería un mensaje rápido y claro. Pero quien lo dio estaba nerviosa y usó demasiadas palabras.",c:"¿Cómo se comunica una urgencia de forma precisa y sin generar más alarma?"},
+    {t:"¿Entendiste?",e:"Terminás de dar una indicación a un paciente. Le preguntás si entendió. Dice que sí. Después resulta que no entendió nada.",c:"¿Cómo verificarías realmente que el mensaje llegó?"},
+    {t:"Cierre del ciclo",e:"Llegamos al final de los cinco talleres. Cada una atravesó este recorrido desde un lugar diferente.",c:"¿Cuál es el aprendizaje más valioso que te llevás? ¿Qué vas a hacer diferente a partir de mañana?"}
+  ]}
+];
+
+let E = {
+  modo:null,parCod:null,tallerActivo:null,sitActiva:0,
+  codigos:['AZUL','VERDE','ROJO','SOL','LUNA'],
+  respuestas:{},parEnvio:{}
+};
+
+const $=id=>document.getElementById(id);
+
+function saveLocal(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify({tallerActivo:E.tallerActivo,sitActiva:E.sitActiva,codigos:E.codigos,respuestas:E.respuestas}));}catch(e){}
+}
+
+function loadLocal(){
+  try{
+    const d=localStorage.getItem(STORAGE_KEY);
+    if(d){const p=JSON.parse(d);E.tallerActivo=p.tallerActivo;E.sitActiva=p.sitActiva||0;E.codigos=p.codigos||E.codigos;E.respuestas=p.respuestas||{};}
+  }catch(e){}
+}
+
+function go(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  $(id).classList.add('on');
+  window.scrollTo(0,0);
+}
+
+function facLogin(){
+  if($('fac-pass').value.trim().toUpperCase()===FAC_PASS){
+    $('fac-err').style.display='none';
+    loadLocal();renderFacMain();go('s-fac-main');startPoll();
+  }else{$('fac-err').style.display='block';}
+}
+
+function parLogin(){
+  loadLocal();
+  const cod=$('par-cod').value.trim().toUpperCase();
+  if(E.codigos.includes(cod)){
+    E.parCod=cod;E.modo='participante';
+    $('par-err').style.display='none';
+    $('par-espera-cod').textContent='Código: '+cod;
+    if(E.tallerActivo!==null){renderParActiva();go('s-par-activa');}
+    else go('s-par-espera');
+    startPoll();
+  }else{$('par-err').style.display='block';}
+}
+
+function renderFacMain(){
+  const t=E.tallerActivo?TALLERES.find(x=>x.id===E.tallerActivo):null;
+  $('fac-estado-txt').textContent=t?`Taller activo: T${t.id} — ${t.nombre}`:'Sin taller activo';
+  renderListaTalleres();renderCodigos();
+}
+
+function renderListaTalleres(){
+  $('lista-talleres').innerHTML=TALLERES.map(t=>`
+    <button class="tbtn ${E.tallerActivo===t.id?'sel':''}" onclick="activarTaller(${t.id})">
+      <div class="tnum">${t.id}</div>
+      <div class="tinfo"><strong>${t.nombre}</strong><span>${t.sub}</span></div>
+    </button>`).join('');
+}
+
+function renderCodigos(){
+  $('codlist').innerHTML=E.codigos.map(c=>{
+    const n=contarRespCod(c);
+    return `<div class="coditem">
+      <span>${c}</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <small>${n} resp.</small>
+        <span class="tag tok">activo</span>
+        <button onclick="eliminarCod('${c}')" style="background:none;border:none;cursor:pointer;color:#999;font-size:18px;padding:0;line-height:1">×</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function contarRespCod(cod){
+  let n=0;
+  Object.keys(E.respuestas).forEach(tid=>{Object.keys(E.respuestas[tid]||{}).forEach(sid=>{if(E.respuestas[tid][sid]&&E.respuestas[tid][sid][cod])n++;});});
+  return n;
+}
+
+function agregarCod(){
+  const v=$('nuevo-cod').value.trim().toUpperCase();
+  if(v&&!E.codigos.includes(v)){E.codigos.push(v);$('nuevo-cod').value='';saveLocal();renderCodigos();}
+}
+
+function eliminarCod(c){E.codigos=E.codigos.filter(x=>x!==c);saveLocal();renderCodigos();}
+
+function activarTaller(id){
+  E.tallerActivo=id;E.sitActiva=0;
+  if(!E.respuestas[id])E.respuestas[id]={};
+  saveLocal();renderFacTaller();go('s-fac-taller');
+}
+
+function renderFacTaller(){
+  const t=TALLERES.find(x=>x.id===E.tallerActivo);
+  $('fac-t-titulo').textContent=`T${t.id}: ${t.nombre}`;
+  $('fac-pbar').style.width=Math.round((E.sitActiva+1)/t.sits.length*100)+'%';
+  renderFacSitNav(t);renderFacSitDetail(t);
+}
+
+function renderFacSitNav(t){
+  $('fac-sitnav').innerHTML=t.sits.map((s,i)=>{
+    const has=Object.keys((E.respuestas[t.id]&&E.respuestas[t.id][i])||{}).length>0;
+    return `<button class="sdot ${i===E.sitActiva?'on':has?'done':''}" onclick="cambiarSit(${i})">${i+1}</button>`;
+  }).join('');
+}
+
+function cambiarSit(i){
+  E.sitActiva=i;
+  const t=TALLERES.find(x=>x.id===E.tallerActivo);
+  $('fac-pbar').style.width=Math.round((i+1)/t.sits.length*100)+'%';
+  renderFacSitNav(t);renderFacSitDetail(t);renderFacMuro(t);renderFacDiagSit(t);
+}
+
+function renderFacSitDetail(t){
+  const s=t.sits[E.sitActiva];
+  $('fac-sitdetail').innerHTML=`
+    <div class="scard">
+      <div class="shdr"><div class="snum">${E.sitActiva+1}</div><div class="stitle">${s.t}</div></div>
+      <div class="sbody"><div class="slbl">¿Qué pasó?</div><div class="stxt">${s.e}</div></div>
+      <div class="sconsigna">${s.c}</div>
+    </div>
+    <button class="pbtn" onclick="activarSit()">Activar para el grupo</button>`;
+}
+
+function activarSit(){
+  const t=TALLERES.find(x=>x.id===E.tallerActivo);
+  if(!E.respuestas[t.id])E.respuestas[t.id]={};
+  if(!E.respuestas[t.id][E.sitActiva])E.respuestas[t.id][E.sitActiva]={};
+  saveLocal();
+  alert(`Situación ${E.sitActiva+1} activada.\nLas participantes ya pueden responder.`);
+}
+
+function renderFacMuro(t){
+  const obj=(E.respuestas[t.id]||{})[E.sitActiva]||{};
+  const items=Object.entries(obj);
+  $('muro-count').textContent=items.length;
+  $('fac-muro-notas').innerHTML=items.length===0
+    ?'<div class="empty">Las respuestas aparecerán acá en tiempo real.</div>'
+    :items.map(([cod,txt])=>`<div class="nota wn"><div class="nn">${cod}</div>${txt}</div>`).join('');
+}
+
+function renderFacDiagSit(t){
+  const obj=(E.respuestas[t.id]||{})[E.sitActiva]||{};
+  const items=Object.entries(obj);
+  $('fac-diag-sit').innerHTML=`<div class="clabel" style="margin-bottom:10px">Situación ${E.sitActiva+1} — ${t.sits[E.sitActiva].t}</div>`
+    +(items.length===0?'<div class="empty">Sin respuestas aún.</div>'
+    :items.map(([cod,txt])=>`<div class="diagcard"><div class="diagtit">${cod}</div><div class="diagtxt">${txt}</div></div>`).join(''));
+}
+
+function renderFacPizarraGlobal(){
+  if(!E.tallerActivo){$('fac-pizarra-content').innerHTML='<div class="empty">Activá un taller primero.</div>';return;}
+  const t=TALLERES.find(x=>x.id===E.tallerActivo);
+  const all=[];
+  Object.keys(E.respuestas[t.id]||{}).forEach(si=>{
+    Object.entries(E.respuestas[t.id][si]||{}).forEach(([cod,txt])=>all.push({sit:t.sits[si]?.t||'',cod,txt}));
+  });
+  $('fac-pizarra-content').innerHTML=all.length===0?'<div class="empty">Todavía no hay respuestas.</div>'
+    :`<div class="counter" style="margin-bottom:14px"><span>Total de respuestas</span><strong>${all.length}</strong></div>
+      <div class="pizarra">${all.map(r=>`<div class="nota wn"><div class="nn">${r.cod} · ${r.sit}</div>${r.txt}</div>`).join('')}</div>`;
+}
+
+function renderFacDiagGlobal(){
+  const todos={};
+  E.codigos.forEach(c=>todos[c]=[]);
+  Object.keys(E.respuestas).forEach(tid=>{
+    const t=TALLERES.find(x=>x.id==tid);if(!t)return;
+    Object.keys(E.respuestas[tid]).forEach(si=>{
+      Object.entries(E.respuestas[tid][si]||{}).forEach(([cod,txt])=>{
+        if(!todos[cod])todos[cod]=[];
+        todos[cod].push({taller:t.nombre,sit:t.sits[si]?.t||'',txt});
+      });
+    });
+  });
+  $('fac-diag-content').innerHTML=E.codigos.map(cod=>{
+    const items=todos[cod]||[];
+    return `<div class="card" style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div class="clabel">${cod}</div>
+        <span class="tag tok">${items.length} respuesta${items.length!==1?'s':''}</span>
+      </div>
+      ${items.length===0?'<p style="font-size:13px;color:#6b7280">Sin respuestas aún.</p>'
+        :items.map(r=>`<div class="diagcard"><div class="diagtit">${r.taller} · ${r.sit}</div><div class="diagtxt">${r.txt}</div></div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+function ftab(tab){
+  ['talleres','codigos','pizarra','diagnostico'].forEach(t=>{
+    $('ftab-'+t).classList.toggle('on',t===tab);
+    $('ft-'+t).style.display=t===tab?'block':'none';
+  });
+  if(tab==='pizarra')renderFacPizarraGlobal();
+  if(tab==='diagnostico')renderFacDiagGlobal();
+  if(tab==='codigos')renderCodigos();
+}
+
+function fttab(tab){
+  ['sit','muro','diag'].forEach(t=>{
+    $('fttab-'+t).classList.toggle('on',t===tab);
+    $('ftt-'+t).style.display=t===tab?'block':'none';
+  });
+  const t=TALLERES.find(x=>x.id===E.tallerActivo);
+  if(tab==='muro'&&t)renderFacMuro(t);
+  if(tab==='diag'&&t)renderFacDiagSit(t);
+}
+
+function renderParActiva(){
+  const t=TALLERES.find(x=>x.id===E.tallerActivo);
+  if(!t)return;
+  const s=t.sits[E.sitActiva];
+  $('par-taller-n').textContent=`T${t.id}: ${t.nombre}`;
+  $('par-sit-n').textContent=`Situación ${E.sitActiva+1}: ${s.t}`;
+  $('par-pbar').style.width=Math.round((E.sitActiva+1)/t.sits.length*100)+'%';
+  $('par-sit-card').innerHTML=`
+    <div class="scard">
+      <div class="shdr"><div class="snum">${E.sitActiva+1}</div><div class="stitle">${s.t}</div></div>
+      <div class="sbody"><div class="slbl">¿Qué pasó?</div><div class="stxt">${s.e}</div></div>
+      <div class="sconsigna">${s.c}</div>
+    </div>`;
+  const key=`${E.tallerActivo}-${E.sitActiva}`;
+  const yaEnvio=E.parEnvio[key];
+  $('par-input-area').style.display=yaEnvio?'none':'block';
+  $('par-sent').style.display=yaEnvio?'block':'none';
+  if(!yaEnvio)$('par-resp').value='';
+  renderParMuro();
+}
+
+function partab(tab){
+  ['escribir','pizarra'].forEach(t=>{
+    $('ptab-'+t).classList.toggle('on',t===tab);
+    $('pt-'+t).style.display=t===tab?'block':'none';
+  });
+  if(tab==='pizarra')renderParMuro();
+}
+
+function renderParMuro(){
+  const obj=(E.respuestas[E.tallerActivo]||{})[E.sitActiva]||{};
+  const items=Object.values(obj);
+  $('par-muro-count').textContent=items.length;
+  $('par-muro-notas').innerHTML=items.length===0
+    ?'<div class="empty">Todavía no hay respuestas. Sé la primera.</div>'
+    :items.map(txt=>`<div class="nota">${txt}</div>`).join('');
+}
+
+async function enviarResp(){
+  const txt=$('par-resp').value.trim();if(!txt)return;
+  const key=`${E.tallerActivo}-${E.sitActiva}`;
+  if(!E.respuestas[E.tallerActivo])E.respuestas[E.tallerActivo]={};
+  if(!E.respuestas[E.tallerActivo][E.sitActiva])E.respuestas[E.tallerActivo][E.sitActiva]={};
+  E.respuestas[E.tallerActivo][E.sitActiva][E.parCod]=txt;
+  E.parEnvio[key]=true;
+  saveLocal();
+  $('par-input-area').style.display='none';
+  $('par-sent').style.display='block';
+  renderParMuro();
+}
+
+let pollInterval=null;
+function startPoll(){
+  if(pollInterval)return;
+  pollInterval=setInterval(()=>{
+    const prevTaller=E.tallerActivo;
+    const prevSit=E.sitActiva;
+    loadLocal();
+    if(E.modo==='participante'){
+      if(E.tallerActivo!==null&&document.querySelector('#s-par-espera.on')){
+        renderParActiva();go('s-par-activa');
+      } else if(document.querySelector('#s-par-activa.on')){
+        if(E.tallerActivo!==prevTaller||E.sitActiva!==prevSit)renderParActiva();
+        else renderParMuro();
+      }
+    } else {
+      if(document.querySelector('#s-fac-taller.on')){
+        const t=TALLERES.find(x=>x.id===E.tallerActivo);
+        if(t){renderFacSitNav(t);renderFacMuro(t);renderFacDiagSit(t);}
+      }
+    }
+  },3000);
+}
+</script>
+</body>
+</html>
