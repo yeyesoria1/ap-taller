@@ -2,11 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Comunicación que cuida — AP SMT</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--ap:#0066FF;--ap2:#2EB1FF;--apy:#F4DC00;--r:14px;--r2:9px}
+:root{--ap:#0066FF;--ap2:#2EB1FF;--apy:#F4DC00;--r:14px;--r2:9px;--verde:#22aa55;--amarillo:#f59e0b;--rojo:#ef4444}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4ff;color:#1a1a2e;min-height:100vh;padding-bottom:40px}
 .scr{display:none}.scr.on{display:block}
 .hdr{background:var(--ap);padding:22px 20px 28px;color:#fff}
@@ -75,12 +75,57 @@ input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
 .tok{background:#e8fff3;color:#1a6640}
 .empty{text-align:center;padding:24px 16px;color:#6b7280;font-size:13px}
 .errtxt{font-size:13px;color:#cc2222;margin-top:8px;display:none}
+
+/* SEMÁFORO */
+.sem-instruccion{background:#fff8e0;border:1px solid #f4dc00;border-radius:var(--r2);padding:12px 14px;font-size:13px;color:#7a5c00;margin-bottom:14px;line-height:1.5}
+.sem-pendientes{margin-bottom:16px}
+.sem-pendientes-titulo{font-size:11px;font-weight:700;color:var(--ap);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.sem-tarjeta{background:#fff;border:2px solid #e2e8f0;border-radius:var(--r2);padding:12px 14px;font-size:13px;color:#1a1a2e;line-height:1.4;margin-bottom:8px;cursor:grab;user-select:none;-webkit-user-select:none;transition:transform .15s,box-shadow .15s;touch-action:none}
+.sem-tarjeta:active{transform:scale(1.03);box-shadow:0 4px 16px rgba(0,102,255,.15)}
+.sem-tarjeta.dragging{opacity:.5;transform:scale(1.05)}
+.sem-zonas{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.sem-zona{border-radius:var(--r);padding:12px;min-height:90px;transition:transform .15s}
+.sem-zona.verde{background:#f0fdf4;border:2px dashed var(--verde)}
+.sem-zona.amarillo{background:#fffbeb;border:2px dashed var(--amarillo)}
+.sem-zona.rojo{background:#fef2f2;border:2px dashed var(--rojo)}
+.sem-zona.drag-over{transform:scale(1.02)}
+.sem-zona.verde.drag-over{border-style:solid;background:#dcfce7}
+.sem-zona.amarillo.drag-over{border-style:solid;background:#fef9c3}
+.sem-zona.rojo.drag-over{border-style:solid;background:#fee2e2}
+.sem-zona-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sem-circulo{width:22px;height:22px;border-radius:50%;flex-shrink:0}
+.sem-circulo.verde{background:var(--verde)}
+.sem-circulo.amarillo{background:var(--amarillo)}
+.sem-circulo.rojo{background:var(--rojo)}
+.sem-zona-label{font-size:13px;font-weight:700}
+.sem-zona-label.verde{color:#166534}
+.sem-zona-label.amarillo{color:#92400e}
+.sem-zona-label.rojo{color:#991b1b}
+.sem-zona-sub{font-size:11px;color:#6b7280;margin-left:auto}
+.sem-tarjeta-clasificada{background:#fff;border-radius:var(--r2);padding:9px 11px;font-size:12px;color:#1a1a2e;line-height:1.4;margin-bottom:6px;animation:pop .2s ease}
+.sem-tarjeta-clasificada.verde{border-left:3px solid var(--verde)}
+.sem-tarjeta-clasificada.amarillo{border-left:3px solid var(--amarillo)}
+.sem-tarjeta-clasificada.rojo{border-left:3px solid var(--rojo)}
+.sem-btn-color{flex:1;padding:14px 6px;border:none;border-radius:var(--r2);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
+.sem-btn-color:active{opacity:.8}
+.sem-seleccionada{background:#e8f0ff;border:2px solid var(--ap);border-radius:var(--r2);padding:12px 14px;font-size:13px;font-weight:700;color:#0a2a66;margin-bottom:12px;line-height:1.4}
+.sem-resultado-item{display:flex;align-items:center;gap:8px;background:#fff;border-radius:var(--r2);padding:10px 12px;margin-bottom:7px;border:1px solid #e2e8f0}
+.sem-resultado-txt{flex:1;font-size:13px;line-height:1.4}
+.sem-chips{display:flex;gap:5px}
+.sem-chip{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.sem-chip.verde{background:#dcfce7;color:#166534}
+.sem-chip.amarillo{background:#fef9c3;color:#92400e}
+.sem-chip.rojo{background:#fee2e2;color:#991b1b}
+.sem-barra{height:8px;border-radius:4px;display:flex;overflow:hidden;margin-top:4px}
+.sem-barra-v{background:var(--verde)}
+.sem-barra-a{background:var(--amarillo)}
+.sem-barra-r{background:var(--rojo)}
 </style>
 </head>
 <body>
-
 <div id="app">
 
+<!-- INICIO -->
 <div class="scr on" id="s-inicio">
   <div class="hdr">
     <div class="hdr-tag">Asistencia Pública SMT</div>
@@ -100,11 +145,9 @@ input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
   </div>
 </div>
 
+<!-- FAC LOGIN -->
 <div class="scr" id="s-fac-login">
-  <div class="hdr">
-    <div class="hdrbadge hf">Facilitadora</div>
-    <h1 style="margin-top:8px">Acceso</h1>
-  </div>
+  <div class="hdr"><div class="hdrbadge hf">Facilitadora</div><h1 style="margin-top:8px">Acceso</h1></div>
   <div class="cnt">
     <div class="card">
       <div class="clabel">Contraseña</div>
@@ -116,6 +159,7 @@ input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
   </div>
 </div>
 
+<!-- FAC MAIN -->
 <div class="scr" id="s-fac-main">
   <div class="hdr">
     <div class="hdrbadge hf">Facilitadora</div>
@@ -126,7 +170,7 @@ input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
     <div class="tabs">
       <button class="tab on" id="ftab-talleres" onclick="ftab('talleres')">Talleres</button>
       <button class="tab" id="ftab-codigos" onclick="ftab('codigos')">Códigos</button>
-      <button class="tab" id="ftab-pizarra" onclick="ftab('pizarra')">Pizarra</button>
+      <button class="tab" id="ftab-semaforo" onclick="ftab('semaforo')">Semáforo</button>
       <button class="tab" id="ftab-diagnostico" onclick="ftab('diagnostico')">Diagnóstico</button>
     </div>
     <div id="ft-talleres"><div id="lista-talleres"></div></div>
@@ -142,11 +186,27 @@ input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
         <button class="pbtn" style="margin-top:10px" onclick="agregarCod()">Agregar</button>
       </div>
     </div>
-    <div id="ft-pizarra" style="display:none"><div id="fac-pizarra-content"></div></div>
+    <div id="ft-semaforo" style="display:none">
+      <div class="card">
+        <div class="clabel">Situaciones del Taller 3 — Semáforo</div>
+        <p style="font-size:13px;color:#6b7280;margin-bottom:12px;line-height:1.5">Cargá entre 15 y 20 situaciones. Las participantes las clasificarán en Verde, Amarillo o Rojo.</p>
+        <div id="sem-lista-fac"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input type="text" id="sem-nueva" placeholder="Escribí una situación..." style="flex:1;margin-top:0" onkeydown="if(event.key==='Enter')semAgregar()">
+          <button onclick="semAgregar()" style="background:var(--ap);color:#fff;border:none;border-radius:var(--r2);padding:11px 16px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0">+</button>
+        </div>
+      </div>
+      <div class="card" style="margin-top:0">
+        <div class="clabel">Activar semáforo</div>
+        <p style="font-size:13px;color:#6b7280;margin-bottom:10px;line-height:1.5">Cuando actives el semáforo, las participantes verán todas las tarjetas para clasificar.</p>
+        <button class="pbtn" onclick="semActivar()">Activar semáforo para el grupo</button>
+      </div>
+    </div>
     <div id="ft-diagnostico" style="display:none"><div id="fac-diag-content"></div></div>
   </div>
 </div>
 
+<!-- FAC TALLER -->
 <div class="scr" id="s-fac-taller">
   <div class="hdr">
     <button class="bbtn" onclick="go('s-fac-main')">← Panel</button>
@@ -172,12 +232,27 @@ input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
   </div>
 </div>
 
-<div class="scr" id="s-par-login">
+<!-- FAC SEMÁFORO RESULTADOS -->
+<div class="scr" id="s-fac-semresult">
   <div class="hdr">
-    <div class="hdrbadge hp">Participante</div>
-    <h1 style="margin-top:8px">Ingresá tu código</h1>
-    <p>Tu facilitadora te asignó un código personal</p>
+    <button class="bbtn" onclick="go('s-fac-main')">← Panel</button>
+    <div class="hdrbadge hf">Facilitadora</div>
+    <h1 style="margin-top:6px">Semáforo — T3</h1>
+    <p>Resultados en tiempo real</p>
   </div>
+  <div class="cnt">
+    <div class="tabs">
+      <button class="tab on" id="semtab-col" onclick="semFacTab('col')">Colectivo</button>
+      <button class="tab" id="semtab-ind" onclick="semFacTab('ind')">Individual</button>
+    </div>
+    <div id="sem-fac-col"></div>
+    <div id="sem-fac-ind" style="display:none"></div>
+  </div>
+</div>
+
+<!-- PAR LOGIN -->
+<div class="scr" id="s-par-login">
+  <div class="hdr"><div class="hdrbadge hp">Participante</div><h1 style="margin-top:8px">Ingresá tu código</h1><p>Tu facilitadora te asignó un código personal</p></div>
   <div class="cnt">
     <div class="card">
       <div class="clabel">Tu código</div>
@@ -189,12 +264,9 @@ input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
   </div>
 </div>
 
+<!-- PAR ESPERA -->
 <div class="scr" id="s-par-espera">
-  <div class="hdr">
-    <div class="hdrbadge hp">Participante</div>
-    <h1 style="margin-top:8px" id="par-espera-cod"></h1>
-    <p>Esperando que la facilitadora active el taller</p>
-  </div>
+  <div class="hdr"><div class="hdrbadge hp">Participante</div><h1 style="margin-top:8px" id="par-espera-cod"></h1><p>Esperando que la facilitadora active el taller</p></div>
   <div class="cnt">
     <div class="card" style="text-align:center;padding:30px 16px">
       <div style="width:50px;height:50px;border-radius:50%;background:#e8f0ff;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:22px">⏳</div>
@@ -203,6 +275,7 @@ input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
   </div>
 </div>
 
+<!-- PAR ACTIVA (respuestas escritas) -->
 <div class="scr" id="s-par-activa">
   <div class="hdr">
     <div class="hdrbadge hp">Participante</div>
@@ -234,12 +307,75 @@ input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
   </div>
 </div>
 
+<!-- PAR SEMÁFORO -->
+<div class="scr" id="s-par-semaforo">
+  <div class="hdr">
+    <div class="hdrbadge hp">Participante</div>
+    <h1 style="margin-top:6px">Taller 3 — El semáforo</h1>
+    <p style="color:#aaccff;font-size:13px;margin-top:3px">Clasificá cada tarjeta según cómo lo ves</p>
+  </div>
+  <div class="cnt">
+    <div class="sem-instruccion">Tocá una tarjeta y después elegí su color. Podés cambiar de opinión hasta que confirmes.</div>
+
+    <div id="sem-par-pendientes-wrap">
+      <div class="sem-pendientes-titulo">Tarjetas para clasificar</div>
+      <div id="sem-par-pendientes"></div>
+    </div>
+
+    <div id="sem-par-seleccionada-wrap" style="display:none">
+      <div class="sem-pendientes-titulo">Tarjeta seleccionada</div>
+      <div class="sem-seleccionada" id="sem-par-sel-txt"></div>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button class="sem-btn-color" style="background:#dcfce7;color:#166534" onclick="semParClasificar('verde')">VERDE</button>
+        <button class="sem-btn-color" style="background:#fef9c3;color:#92400e" onclick="semParClasificar('amarillo')">AMARILLO</button>
+        <button class="sem-btn-color" style="background:#fee2e2;color:#991b1b" onclick="semParClasificar('rojo')">ROJO</button>
+      </div>
+      <button class="sbtn" style="margin-top:0" onclick="semParDeseleccionar()">← Volver a las tarjetas</button>
+    </div>
+
+    <div class="sem-zonas">
+      <div class="sem-zona verde">
+        <div class="sem-zona-header">
+          <div class="sem-circulo verde"></div>
+          <span class="sem-zona-label verde">VERDE — Funciona bien</span>
+          <span class="sem-zona-sub" id="sem-count-verde">0</span>
+        </div>
+        <div id="sem-zona-verde"></div>
+      </div>
+      <div class="sem-zona amarillo">
+        <div class="sem-zona-header">
+          <div class="sem-circulo amarillo"></div>
+          <span class="sem-zona-label amarillo">AMARILLO — Me preocupa</span>
+          <span class="sem-zona-sub" id="sem-count-amarillo">0</span>
+        </div>
+        <div id="sem-zona-amarillo"></div>
+      </div>
+      <div class="sem-zona rojo">
+        <div class="sem-zona-header">
+          <div class="sem-circulo rojo"></div>
+          <span class="sem-zona-label rojo">ROJO — Hay que cambiar</span>
+          <span class="sem-zona-sub" id="sem-count-rojo">0</span>
+        </div>
+        <div id="sem-zona-rojo"></div>
+      </div>
+    </div>
+
+    <div id="sem-par-finalizar" style="display:none">
+      <button class="pbtn" onclick="semParEnviar()">Confirmar mi clasificación</button>
+    </div>
+    <div id="sem-par-enviado" style="display:none">
+      <div class="sent">¡Clasificación enviada! Podés ver el resultado del grupo abajo.</div>
+      <div style="margin-top:16px" id="sem-par-resultado-grupo"></div>
+    </div>
+  </div>
+</div>
+
 </div>
 
 <script>
-const FAC_PASS = "AP2026";
-const STORAGE_KEY = "ap-taller-v1";
-const TALLERES = [
+const FAC_PASS="AP2026";
+const STORAGE_KEY="ap-taller-v2";
+const TALLERES=[
   {id:1,nombre:"El primer eslabón",sub:"Calidad del trato y proceso de atención",sits:[
     {t:"Orden vencida",e:"Un paciente llega con una orden médica vencida hace 15 días para una ecografía. Está alterado porque vino desde lejos y dice que nadie le avisó que tenía fecha de vencimiento.",c:"¿Cómo le explicarían la situación sin que sienta que lo están rechazando? ¿Qué alternativa le ofrecerían?"},
     {t:"Llegada tarde al turno",e:"Un paciente llega 25 minutos después de su turno. El médico ya atiende al siguiente. Insiste en que son solo unos minutos y que no puede volver otro día.",c:"¿Cómo comunican la imposibilidad de atenderlo sin que escale la situación?"},
@@ -254,10 +390,7 @@ const TALLERES = [
     {t:"El protocolo que no existe",e:"Surge una situación frecuente que nadie documentó. Cada una lo resuelve a su modo.",c:"¿Cuáles son las situaciones que necesitarían tener un criterio escrito y acordado?"}
   ]},
   {id:3,nombre:"El equipo somos nosotras",sub:"Trabajo en equipo y organización cotidiana",sits:[
-    {t:"Semáforo verde",e:"Pensá en el equipo tal como funciona hoy. ¿Qué está funcionando bien? ¿Qué harías exactamente igual?",c:"Escribí una cosa concreta que el equipo hace bien y que vale la pena cuidar."},
-    {t:"Semáforo amarillo",e:"¿Qué aspecto del trabajo cotidiano te genera incomodidad, pero que todavía no llegó a ser un problema grave?",c:"Describí esa situación. ¿Qué pequeño cambio la mejoraría?"},
-    {t:"Semáforo rojo",e:"¿Hay algo en la dinámica del equipo que sentís que necesita cambiar sí o sí?",c:"Nombralo. ¿Qué cambio concreto propondrías?"},
-    {t:"El desayuno de 20 minutos",e:"El desayuno compartido existe, pero no siempre se aprovecha como momento de coordinación.",c:"¿Cómo podría transformarse en un momento que le sirva al equipo?"}
+    {t:"Cierre del semáforo",e:"Mirá las situaciones que clasificaste. Pensá cuál es la que más te preocupa.",c:"¿Qué cambio concreto propondrías para la situación que pusiste en rojo?"},
   ]},
   {id:4,nombre:"Con el médico también se habla",sub:"Comunicación con el equipo médico",sits:[
     {t:"El paciente sin turno",e:"Un paciente insiste en hablar con el médico sin turno porque es urgente. El médico está en consulta.",c:"¿Qué le dicen al paciente? ¿Y al médico?"},
@@ -273,29 +406,40 @@ const TALLERES = [
   ]}
 ];
 
-let E = {
+let E={
   modo:null,parCod:null,tallerActivo:null,sitActiva:0,
   codigos:['AZUL','VERDE','ROJO','SOL','LUNA'],
-  respuestas:{},parEnvio:{}
+  respuestas:{},parEnvio:{},
+  semSituaciones:[],semActivo:false,semClasificaciones:{},
+  semParSeleccionada:null,semParClasif:{}
 };
 
 const $=id=>document.getElementById(id);
 
 function saveLocal(){
-  try{localStorage.setItem(STORAGE_KEY,JSON.stringify({tallerActivo:E.tallerActivo,sitActiva:E.sitActiva,codigos:E.codigos,respuestas:E.respuestas}));}catch(e){}
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify({
+    tallerActivo:E.tallerActivo,sitActiva:E.sitActiva,codigos:E.codigos,
+    respuestas:E.respuestas,semSituaciones:E.semSituaciones,
+    semActivo:E.semActivo,semClasificaciones:E.semClasificaciones
+  }));}catch(e){}
 }
 
 function loadLocal(){
   try{
     const d=localStorage.getItem(STORAGE_KEY);
-    if(d){const p=JSON.parse(d);E.tallerActivo=p.tallerActivo;E.sitActiva=p.sitActiva||0;E.codigos=p.codigos||E.codigos;E.respuestas=p.respuestas||{};}
+    if(d){
+      const p=JSON.parse(d);
+      E.tallerActivo=p.tallerActivo;E.sitActiva=p.sitActiva||0;
+      E.codigos=p.codigos||E.codigos;E.respuestas=p.respuestas||{};
+      E.semSituaciones=p.semSituaciones||[];E.semActivo=p.semActivo||false;
+      E.semClasificaciones=p.semClasificaciones||{};
+    }
   }catch(e){}
 }
 
 function go(id){
   document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
-  $(id).classList.add('on');
-  window.scrollTo(0,0);
+  $(id).classList.add('on');window.scrollTo(0,0);
 }
 
 function facLogin(){
@@ -312,7 +456,8 @@ function parLogin(){
     E.parCod=cod;E.modo='participante';
     $('par-err').style.display='none';
     $('par-espera-cod').textContent='Código: '+cod;
-    if(E.tallerActivo!==null){renderParActiva();go('s-par-activa');}
+    if(E.semActivo){renderParSemaforo();go('s-par-semaforo');}
+    else if(E.tallerActivo!==null){renderParActiva();go('s-par-activa');}
     else go('s-par-espera');
     startPoll();
   }else{$('par-err').style.display='block';}
@@ -321,7 +466,7 @@ function parLogin(){
 function renderFacMain(){
   const t=E.tallerActivo?TALLERES.find(x=>x.id===E.tallerActivo):null;
   $('fac-estado-txt').textContent=t?`Taller activo: T${t.id} — ${t.nombre}`:'Sin taller activo';
-  renderListaTalleres();renderCodigos();
+  renderListaTalleres();renderCodigos();renderSemListaFac();
 }
 
 function renderListaTalleres(){
@@ -335,14 +480,11 @@ function renderListaTalleres(){
 function renderCodigos(){
   $('codlist').innerHTML=E.codigos.map(c=>{
     const n=contarRespCod(c);
-    return `<div class="coditem">
-      <span>${c}</span>
+    return `<div class="coditem"><span>${c}</span>
       <div style="display:flex;align-items:center;gap:8px">
-        <small>${n} resp.</small>
-        <span class="tag tok">activo</span>
+        <small>${n} resp.</small><span class="tag tok">activo</span>
         <button onclick="eliminarCod('${c}')" style="background:none;border:none;cursor:pointer;color:#999;font-size:18px;padding:0;line-height:1">×</button>
-      </div>
-    </div>`;
+      </div></div>`;
   }).join('');
 }
 
@@ -422,21 +564,8 @@ function renderFacDiagSit(t){
     :items.map(([cod,txt])=>`<div class="diagcard"><div class="diagtit">${cod}</div><div class="diagtxt">${txt}</div></div>`).join(''));
 }
 
-function renderFacPizarraGlobal(){
-  if(!E.tallerActivo){$('fac-pizarra-content').innerHTML='<div class="empty">Activá un taller primero.</div>';return;}
-  const t=TALLERES.find(x=>x.id===E.tallerActivo);
-  const all=[];
-  Object.keys(E.respuestas[t.id]||{}).forEach(si=>{
-    Object.entries(E.respuestas[t.id][si]||{}).forEach(([cod,txt])=>all.push({sit:t.sits[si]?.t||'',cod,txt}));
-  });
-  $('fac-pizarra-content').innerHTML=all.length===0?'<div class="empty">Todavía no hay respuestas.</div>'
-    :`<div class="counter" style="margin-bottom:14px"><span>Total de respuestas</span><strong>${all.length}</strong></div>
-      <div class="pizarra">${all.map(r=>`<div class="nota wn"><div class="nn">${r.cod} · ${r.sit}</div>${r.txt}</div>`).join('')}</div>`;
-}
-
 function renderFacDiagGlobal(){
-  const todos={};
-  E.codigos.forEach(c=>todos[c]=[]);
+  const todos={};E.codigos.forEach(c=>todos[c]=[]);
   Object.keys(E.respuestas).forEach(tid=>{
     const t=TALLERES.find(x=>x.id==tid);if(!t)return;
     Object.keys(E.respuestas[tid]).forEach(si=>{
@@ -446,12 +575,20 @@ function renderFacDiagGlobal(){
       });
     });
   });
+  // también incluir semáforo en diagnóstico
+  Object.entries(E.semClasificaciones).forEach(([cod,clasif])=>{
+    if(!todos[cod])todos[cod]=[];
+    Object.entries(clasif).forEach(([idx,color])=>{
+      const sit=E.semSituaciones[idx]||'';
+      todos[cod].push({taller:'Semáforo T3',sit,txt:`→ ${color.toUpperCase()}`});
+    });
+  });
   $('fac-diag-content').innerHTML=E.codigos.map(cod=>{
     const items=todos[cod]||[];
     return `<div class="card" style="margin-bottom:12px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
         <div class="clabel">${cod}</div>
-        <span class="tag tok">${items.length} respuesta${items.length!==1?'s':''}</span>
+        <span class="tag tok">${items.length} entradas</span>
       </div>
       ${items.length===0?'<p style="font-size:13px;color:#6b7280">Sin respuestas aún.</p>'
         :items.map(r=>`<div class="diagcard"><div class="diagtit">${r.taller} · ${r.sit}</div><div class="diagtxt">${r.txt}</div></div>`).join('')}
@@ -460,13 +597,13 @@ function renderFacDiagGlobal(){
 }
 
 function ftab(tab){
-  ['talleres','codigos','pizarra','diagnostico'].forEach(t=>{
+  ['talleres','codigos','semaforo','diagnostico'].forEach(t=>{
     $('ftab-'+t).classList.toggle('on',t===tab);
     $('ft-'+t).style.display=t===tab?'block':'none';
   });
-  if(tab==='pizarra')renderFacPizarraGlobal();
   if(tab==='diagnostico')renderFacDiagGlobal();
   if(tab==='codigos')renderCodigos();
+  if(tab==='semaforo')renderSemListaFac();
 }
 
 function fttab(tab){
@@ -477,6 +614,187 @@ function fttab(tab){
   const t=TALLERES.find(x=>x.id===E.tallerActivo);
   if(tab==='muro'&&t)renderFacMuro(t);
   if(tab==='diag'&&t)renderFacDiagSit(t);
+}
+
+// ── SEMÁFORO FAC ──
+function renderSemListaFac(){
+  $('sem-lista-fac').innerHTML=E.semSituaciones.length===0
+    ?'<p style="font-size:13px;color:#6b7280;margin-bottom:8px">No hay situaciones cargadas aún.</p>'
+    :E.semSituaciones.map((s,i)=>`
+      <div style="display:flex;align-items:center;gap:8px;background:#f8faff;border:1px solid #e2e8f0;border-radius:var(--r2);padding:10px 12px;margin-bottom:7px">
+        <span style="flex:1;font-size:13px">${i+1}. ${s}</span>
+        <button onclick="semEliminar(${i})" style="background:none;border:none;cursor:pointer;color:#999;font-size:16px;padding:0;line-height:1">×</button>
+      </div>`).join('');
+}
+
+function semAgregar(){
+  const v=$('sem-nueva').value.trim();
+  if(v&&E.semSituaciones.length<20){
+    E.semSituaciones.push(v);$('sem-nueva').value='';saveLocal();renderSemListaFac();
+  }
+}
+
+function semEliminar(i){E.semSituaciones.splice(i,1);saveLocal();renderSemListaFac();}
+
+function semActivar(){
+  if(E.semSituaciones.length<3){alert('Cargá al menos 3 situaciones antes de activar.');return;}
+  E.semActivo=true;saveLocal();
+  renderFacSemResult();go('s-fac-semresult');
+}
+
+function semFacTab(tab){
+  ['col','ind'].forEach(t=>{
+    $('semtab-'+t).classList.toggle('on',t===tab);
+    $('sem-fac-'+t).style.display=t===tab?'block':'none';
+  });
+  renderFacSemResult();
+}
+
+function renderFacSemResult(){
+  // Colectivo: para cada situación, contar votos por color
+  const col=$('sem-fac-col');
+  const totales=E.semSituaciones.map((sit,i)=>{
+    const v={verde:0,amarillo:0,rojo:0};
+    Object.values(E.semClasificaciones).forEach(clasif=>{if(clasif[i])v[clasif[i]]++;});
+    return {sit,v};
+  });
+  // ordenar por más rojos
+  const sorted=[...totales].sort((a,b)=>(b.v.rojo+b.v.amarillo)-(a.v.rojo+a.v.amarillo));
+  const total=Object.keys(E.semClasificaciones).length||1;
+  col.innerHTML=sorted.length===0?'<div class="empty">Sin clasificaciones aún.</div>'
+    :sorted.map(({sit,v})=>{
+      const tot=v.verde+v.amarillo+v.rojo||1;
+      return `<div class="sem-resultado-item">
+        <div style="flex:1">
+          <div class="sem-resultado-txt">${sit}</div>
+          <div class="sem-barra" style="margin-top:6px">
+            <div class="sem-barra-v" style="width:${Math.round(v.verde/tot*100)}%"></div>
+            <div class="sem-barra-a" style="width:${Math.round(v.amarillo/tot*100)}%"></div>
+            <div class="sem-barra-r" style="width:${Math.round(v.rojo/tot*100)}%"></div>
+          </div>
+        </div>
+        <div class="sem-chips">
+          <span class="sem-chip verde">${v.verde}V</span>
+          <span class="sem-chip amarillo">${v.amarillo}A</span>
+          <span class="sem-chip rojo">${v.rojo}R</span>
+        </div>
+      </div>`;
+    }).join('');
+
+  // Individual
+  const ind=$('sem-fac-ind');
+  ind.innerHTML=E.codigos.map(cod=>{
+    const clasif=E.semClasificaciones[cod]||{};
+    const items=Object.entries(clasif);
+    return `<div class="card" style="margin-bottom:12px">
+      <div class="clabel" style="margin-bottom:8px">${cod}</div>
+      ${items.length===0?'<p style="font-size:13px;color:#6b7280">Sin clasificar aún.</p>'
+        :items.map(([idx,color])=>`
+          <div class="sem-tarjeta-clasificada ${color}">
+            ${E.semSituaciones[idx]||''}
+          </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+// ── SEMÁFORO PAR ──
+function renderParSemaforo(){
+  const clasif=E.semParClasif;
+  const pendientes=E.semSituaciones.filter((_,i)=>!clasif[i]);
+  const totalClasif=Object.keys(clasif).length;
+  const yaEnvio=E.semClasificaciones[E.parCod]&&Object.keys(E.semClasificaciones[E.parCod]).length>0;
+
+  if(yaEnvio){
+    $('sem-par-pendientes-wrap').style.display='none';
+    $('sem-par-seleccionada-wrap').style.display='none';
+    $('sem-par-finalizar').style.display='none';
+    $('sem-par-enviado').style.display='block';
+    renderSemParResultadoGrupo();
+    return;
+  }
+
+  $('sem-par-enviado').style.display='none';
+  $('sem-par-seleccionada-wrap').style.display='none';
+
+  // Pendientes
+  $('sem-par-pendientes-wrap').style.display='block';
+  $('sem-par-pendientes').innerHTML=pendientes.length===0
+    ?'<div class="empty" style="padding:12px 0">¡Clasificaste todas!</div>'
+    :pendientes.map((sit,_)=>{
+      const realIdx=E.semSituaciones.indexOf(sit);
+      return `<div class="sem-tarjeta" onclick="semParSeleccionar(${realIdx})">${sit}</div>`;
+    }).join('');
+
+  // Zonas clasificadas
+  ['verde','amarillo','rojo'].forEach(color=>{
+    const zona=$(  `sem-zona-${color}`);
+    const items=Object.entries(clasif).filter(([,c])=>c===color);
+    $(`sem-count-${color}`).textContent=items.length;
+    zona.innerHTML=items.map(([idx])=>`<div class="sem-tarjeta-clasificada ${color}">${E.semSituaciones[idx]||''}</div>`).join('');
+  });
+
+  // Botón finalizar
+  $('sem-par-finalizar').style.display=totalClasif>0&&pendientes.length===0?'block':'none';
+}
+
+function semParSeleccionar(idx){
+  E.semParSeleccionada=idx;
+  $('sem-par-sel-txt').textContent=E.semSituaciones[idx];
+  $('sem-par-pendientes-wrap').style.display='none';
+  $('sem-par-seleccionada-wrap').style.display='block';
+}
+
+function semParDeseleccionar(){
+  E.semParSeleccionada=null;
+  $('sem-par-seleccionada-wrap').style.display='none';
+  renderParSemaforo();
+}
+
+function semParClasificar(color){
+  if(E.semParSeleccionada===null)return;
+  E.semParClasif[E.semParSeleccionada]=color;
+  E.semParSeleccionada=null;
+  renderParSemaforo();
+}
+
+function semParEnviar(){
+  if(!E.semClasificaciones[E.parCod])E.semClasificaciones[E.parCod]={};
+  Object.assign(E.semClasificaciones[E.parCod],E.semParClasif);
+  saveLocal();
+  $('sem-par-finalizar').style.display='none';
+  $('sem-par-pendientes-wrap').style.display='none';
+  $('sem-par-enviado').style.display='block';
+  renderSemParResultadoGrupo();
+}
+
+function renderSemParResultadoGrupo(){
+  const totales=E.semSituaciones.map((sit,i)=>{
+    const v={verde:0,amarillo:0,rojo:0};
+    Object.values(E.semClasificaciones).forEach(clasif=>{if(clasif[i])v[clasif[i]]++;});
+    return {sit,v};
+  }).filter(x=>x.v.verde+x.v.amarillo+x.v.rojo>0)
+    .sort((a,b)=>(b.v.rojo+b.v.amarillo)-(a.v.rojo+a.v.amarillo));
+
+  $('sem-par-resultado-grupo').innerHTML=totales.length===0?''
+    :`<div class="clabel" style="margin-bottom:10px">Resultado del grupo (anónimo)</div>`
+    +totales.map(({sit,v})=>{
+      const tot=v.verde+v.amarillo+v.rojo||1;
+      return `<div class="sem-resultado-item">
+        <div style="flex:1">
+          <div class="sem-resultado-txt">${sit}</div>
+          <div class="sem-barra" style="margin-top:5px">
+            <div class="sem-barra-v" style="width:${Math.round(v.verde/tot*100)}%"></div>
+            <div class="sem-barra-a" style="width:${Math.round(v.amarillo/tot*100)}%"></div>
+            <div class="sem-barra-r" style="width:${Math.round(v.rojo/tot*100)}%"></div>
+          </div>
+        </div>
+        <div class="sem-chips">
+          <span class="sem-chip verde">${v.verde}</span>
+          <span class="sem-chip amarillo">${v.amarillo}</span>
+          <span class="sem-chip rojo">${v.rojo}</span>
+        </div>
+      </div>`;
+    }).join('');
 }
 
 function renderParActiva(){
@@ -534,13 +852,13 @@ let pollInterval=null;
 function startPoll(){
   if(pollInterval)return;
   pollInterval=setInterval(()=>{
-    const prevTaller=E.tallerActivo;
-    const prevSit=E.sitActiva;
+    const prevTaller=E.tallerActivo,prevSit=E.sitActiva,prevSem=E.semActivo;
     loadLocal();
     if(E.modo==='participante'){
-      if(E.tallerActivo!==null&&document.querySelector('#s-par-espera.on')){
-        renderParActiva();go('s-par-activa');
-      } else if(document.querySelector('#s-par-activa.on')){
+      if(E.semActivo&&!prevSem){renderParSemaforo();go('s-par-semaforo');return;}
+      if(E.semActivo&&document.querySelector('#s-par-semaforo.on')){renderSemParResultadoGrupo();return;}
+      if(E.tallerActivo!==null&&document.querySelector('#s-par-espera.on')){renderParActiva();go('s-par-activa');}
+      else if(document.querySelector('#s-par-activa.on')){
         if(E.tallerActivo!==prevTaller||E.sitActiva!==prevSit)renderParActiva();
         else renderParMuro();
       }
@@ -549,6 +867,7 @@ function startPoll(){
         const t=TALLERES.find(x=>x.id===E.tallerActivo);
         if(t){renderFacSitNav(t);renderFacMuro(t);renderFacDiagSit(t);}
       }
+      if(document.querySelector('#s-fac-semresult.on'))renderFacSemResult();
     }
   },3000);
 }
