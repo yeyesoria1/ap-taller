@@ -704,12 +704,13 @@ window.parLogin=parLogin;
 function parListeners(){
   dbListen('estado',async estado=>{
     if(!estado)return;
-    if(estado.semActivo&&!document.querySelector('#s-par-semaforo.on')){
-      await renderParSemaforo();go('s-par-semaforo');
-    } else if(!estado.semActivo&&estado.tallerActivo!=null&&document.querySelector('#s-par-espera.on')){
-      await renderParActiva(estado);go('s-par-activa');
-    } else if(document.querySelector('#s-par-activa.on')){
-      await renderParActiva(estado);
+    if(estado.semActivo){
+      if(!document.querySelector('#s-par-semaforo.on')){await renderParSemaforo();go('s-par-semaforo');}
+    } else if(estado.tallerActivo!=null){
+      if(!document.querySelector('#s-par-activa.on')){await renderParActiva(estado);go('s-par-activa');}
+      else await renderParActiva(estado);
+    } else {
+      if(!document.querySelector('#s-par-espera.on'))go('s-par-espera');
     }
   });
   dbListen('respuestas',async data=>{
