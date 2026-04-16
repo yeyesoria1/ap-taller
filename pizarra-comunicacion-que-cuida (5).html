@@ -225,8 +225,8 @@ input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
     <div id="par-status"></div>
     <div class="card">
       <div class="lbl">Tu código</div>
-      <input class="codinput" id="par-cod" placeholder="CÓDIGO" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="if(event.key==='Enter')parLogin()">
-      <button class="pbtn" style="margin-top:14px" onclick="parLogin()">Entrar</button>
+      <input class="codinput" id="par-cod" placeholder="CÓDIGO" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
+      <button class="pbtn" style="margin-top:14px" id="par-login-btn">Entrar</button>
       <p class="errtxt" id="par-err">Código no válido.</p>
     </div>
     <button class="sbtn" onclick="go('s-inicio')">Volver</button>
@@ -372,6 +372,22 @@ let semParSelIdx = null;
 let semParClasif = {};
 
 const $ = id => document.getElementById(id);
+
+window.addEventListener('DOMContentLoaded', function(){
+  const input = document.getElementById('par-cod');
+  if(input){
+    input.addEventListener('input', function(){
+      const pos = this.selectionStart;
+      this.value = this.value.toUpperCase();
+      this.setSelectionRange(pos, pos);
+    });
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter') parLogin();
+    });
+  }
+  const btn = document.getElementById('par-login-btn');
+  if(btn) btn.addEventListener('click', parLogin);
+});
 
 function go(id){
   document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
