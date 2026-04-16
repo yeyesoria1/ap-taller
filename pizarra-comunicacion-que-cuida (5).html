@@ -225,7 +225,7 @@ input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
     <div id="par-status"></div>
     <div class="card">
       <div class="lbl">Tu código</div>
-      <input class="codinput" id="par-cod" placeholder="CÓDIGO" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')parLogin()">
+      <input class="codinput" id="par-cod" placeholder="CÓDIGO" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="if(event.key==='Enter')parLogin()">
       <button class="pbtn" style="margin-top:14px" onclick="parLogin()">Entrar</button>
       <p class="errtxt" id="par-err">Código no válido.</p>
     </div>
@@ -631,7 +631,7 @@ function semFacTab(tab){
 
 // ── PAR ──
 async function parLogin(){
-  const cod=$('par-cod').value.trim().toUpperCase();
+  const cod=String($('par-cod').value||'').trim().toUpperCase();
   $('par-status').className='status';
   $('par-status').textContent='Verificando...';
   $('par-status').style.display='block';
