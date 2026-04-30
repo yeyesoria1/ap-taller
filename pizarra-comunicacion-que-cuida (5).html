@@ -2,361 +2,425 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Comunicación que cuida — AP SMT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comunicación que Cuida — Taller 3</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--ap:#0066FF;--apy:#F4DC00;--r:14px;--r2:9px;--verde:#22aa55;--amarillo:#f59e0b;--rojo:#ef4444}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4ff;color:#1a1a2e;min-height:100vh;padding-bottom:40px}
-.scr{display:none}.scr.on{display:block}
-.hdr{background:var(--ap);padding:22px 20px 28px;color:#fff}
-.hdr h1{font-size:22px;font-weight:700;line-height:1.3;margin-top:8px}
-.hdr p{font-size:13px;color:#cce;margin-top:5px}
-.hdrbadge{display:inline-block;font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px}
-.hf{background:rgba(255,255,255,.15);color:#fff}
-.hp{background:var(--apy);color:#1a1a00}
-.cnt{padding:18px}
-.card{background:#fff;border-radius:var(--r);border:1px solid #e2e8f0;padding:16px;margin-bottom:12px}
-.lbl{font-size:11px;font-weight:700;color:var(--ap);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
-.tbtn{width:100%;background:#fff;border:1px solid #e2e8f0;border-radius:var(--r);padding:14px;margin-bottom:9px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;-webkit-tap-highlight-color:transparent}
-.tbtn:active{background:#f0f6ff;border-color:var(--ap)}
-.tbtn.sel{border-color:var(--ap);background:#e8f0ff}
-.tnum{width:36px;height:36px;background:var(--ap);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
-.tinfo strong{display:block;font-size:14px;font-weight:700}
-.tinfo span{font-size:12px;color:#6b7280}
-.pbtn{width:100%;background:var(--ap);color:#fff;border:none;border-radius:var(--r);padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:5px}
-.pbtn:active{opacity:.85}
-.sbtn{width:100%;background:#fff;color:var(--ap);border:2px solid var(--ap);border-radius:var(--r);padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
-.bbtn{background:none;border:none;color:#aaccff;font-size:13px;cursor:pointer;font-family:inherit;padding:0;margin-bottom:10px}
-.tabs{display:flex;gap:6px;margin-bottom:14px}
-.tab{flex:1;padding:9px 4px;border-radius:var(--r2);border:1px solid #e2e8f0;background:#fff;font-size:12px;font-weight:700;color:#6b7280;cursor:pointer;text-align:center;font-family:inherit}
-.tab.on{background:var(--ap);color:#fff;border-color:var(--ap)}
-.scard{background:#fff;border-radius:var(--r);overflow:hidden;margin-bottom:12px;border:1px solid #e2e8f0}
-.shdr{background:var(--ap);padding:12px 15px;display:flex;align-items:center;gap:10px}
-.snum{width:27px;height:27px;background:rgba(255,255,255,.2);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
-.stitle{font-size:14px;font-weight:700;color:#fff;line-height:1.3}
-.sbody{padding:13px 15px}
-.slbl{font-size:11px;font-weight:700;color:var(--ap);text-transform:uppercase;margin-bottom:5px}
-.stxt{font-size:13px;line-height:1.65}
-.sconsigna{background:#f0f4ff;border-top:1px solid #e2e8f0;padding:11px 15px;font-size:13px;color:#1a3a88;font-style:italic;line-height:1.55}
-.nota{background:#fffde7;border:1px solid #f4dc00;border-radius:var(--r2);padding:12px;font-size:13px;line-height:1.55;color:#333300;margin-bottom:8px;animation:pop .25s ease}
-.nota.wn{border-color:#aaccff;background:#f0f6ff;color:#0a2a66}
-.nota .nn{font-size:11px;font-weight:700;color:var(--ap);margin-bottom:4px}
-@keyframes pop{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:scale(1)}}
-.counter{display:flex;align-items:center;justify-content:space-between;background:#e8f0ff;border-radius:var(--r2);padding:10px 14px;margin-bottom:12px}
-.counter span{font-size:13px;color:var(--ap);font-weight:600}
-.counter strong{font-size:20px;color:var(--ap);font-weight:700}
-.dot{width:7px;height:7px;border-radius:50%;background:#22cc88;display:inline-block;margin-right:5px;animation:pulse 1.4s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-textarea{width:100%;border:2px solid #e2e8f0;border-radius:var(--r2);padding:12px;font-size:14px;font-family:inherit;resize:none;outline:none;color:#1a1a2e;line-height:1.65;margin-top:6px;background:#fff}
-textarea:focus{border-color:var(--ap)}
-.sent{background:#e8fff3;border:1px solid #a0e6c0;border-radius:var(--r2);padding:14px;text-align:center;color:#1a6640;font-size:14px;font-weight:600;margin-top:10px}
-.sitnav{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap}
-.sdot{width:32px;height:32px;border-radius:var(--r2);border:1px solid #e2e8f0;background:#fff;font-size:12px;font-weight:700;color:#6b7280;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.sdot.on{background:var(--ap);color:#fff;border-color:var(--ap)}
-.sdot.done{background:#e8f0ff;color:var(--ap);border-color:#aaccff}
-.codinput{width:100%;border:2px solid #e2e8f0;border-radius:var(--r2);padding:12px 14px;font-size:24px;letter-spacing:.2em;text-align:center;font-family:inherit;outline:none;color:#1a1a2e;background:#fff;margin-top:6px}
-.codinput:focus{border-color:var(--ap)}
-.pbar{height:3px;background:rgba(255,255,255,.2);border-radius:2px;margin-top:10px;overflow:hidden}
-.pfill{height:100%;background:var(--apy);border-radius:2px;transition:width .4s}
-.diagcard{background:#fff;border-left:3px solid var(--ap);border-radius:0 var(--r2) var(--r2) 0;border-top:1px solid #e2e8f0;border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:11px 13px;margin-bottom:8px}
-.diagtit{font-size:11px;font-weight:700;color:var(--ap);text-transform:uppercase;margin-bottom:3px}
-.diagtxt{font-size:13px;line-height:1.55}
-input[type=text],input[type=password]{width:100%;border:2px solid #e2e8f0;border-radius:var(--r2);padding:11px 13px;font-size:15px;font-family:inherit;outline:none;color:#1a1a2e;background:#fff;margin-top:6px}
-input[type=text]:focus,input[type=password]:focus{border-color:var(--ap)}
-.tag{display:inline-block;font-size:11px;padding:2px 9px;border-radius:10px;font-weight:700}
-.tok{background:#e8fff3;color:#1a6640}
-.empty{text-align:center;padding:24px 16px;color:#6b7280;font-size:13px}
-.errtxt{font-size:13px;color:#cc2222;margin-top:8px;display:none}
-.status{font-size:12px;padding:6px 10px;border-radius:6px;margin-bottom:10px;display:none}
-.status.ok{background:#e8fff3;color:#1a6640;display:block}
-.status.err{background:#fee2e2;color:#991b1b;display:block}
-/* SEMÁFORO */
-.sem-tarjeta{background:#fff;border:2px solid #e2e8f0;border-radius:var(--r2);padding:12px 14px;font-size:13px;line-height:1.4;margin-bottom:8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.sem-tarjeta:active{border-color:var(--ap);background:#f0f6ff}
-.sem-zona{border-radius:var(--r);padding:12px;min-height:70px;margin-bottom:10px}
-.sem-zona.verde{background:#f0fdf4;border:2px dashed var(--verde)}
-.sem-zona.amarillo{background:#fffbeb;border:2px dashed var(--amarillo)}
-.sem-zona.rojo{background:#fef2f2;border:2px dashed var(--rojo)}
-.sem-zona-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.sem-circ{width:20px;height:20px;border-radius:50%;flex-shrink:0}
-.sem-circ.verde{background:var(--verde)}
-.sem-circ.amarillo{background:var(--amarillo)}
-.sem-circ.rojo{background:var(--rojo)}
-.sem-zlbl{font-size:13px;font-weight:700}
-.sem-zlbl.verde{color:#166534}
-.sem-zlbl.amarillo{color:#92400e}
-.sem-zlbl.rojo{color:#991b1b}
-.sem-tc{background:#fff;border-radius:var(--r2);padding:9px 11px;font-size:12px;line-height:1.4;margin-bottom:6px;animation:pop .2s ease}
-.sem-tc.verde{border-left:3px solid var(--verde)}
-.sem-tc.amarillo{border-left:3px solid var(--amarillo)}
-.sem-tc.rojo{border-left:3px solid var(--rojo)}
-.sem-btn{flex:1;padding:13px 4px;border:none;border-radius:var(--r2);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
-.sem-sel{background:#e8f0ff;border:2px solid var(--ap);border-radius:var(--r2);padding:12px 14px;font-size:13px;font-weight:700;color:#0a2a66;margin-bottom:12px;line-height:1.4}
-.sem-res-item{display:flex;align-items:center;gap:8px;background:#fff;border-radius:var(--r2);padding:10px 12px;margin-bottom:7px;border:1px solid #e2e8f0}
-.sem-chip{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap}
-.sem-chip.verde{background:#dcfce7;color:#166534}
-.sem-chip.amarillo{background:#fef9c3;color:#92400e}
-.sem-chip.rojo{background:#fee2e2;color:#991b1b}
-.sem-barra{height:8px;border-radius:4px;display:flex;overflow:hidden;margin-top:4px}
-.sem-bv{background:var(--verde)}
-.sem-ba{background:var(--amarillo)}
-.sem-br{background:var(--rojo)}
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --card: #1a1a1a;
+    --border: #2a2a2a;
+    --text: #f0ede6;
+    --muted: #888;
+    --green: #4ade80;
+    --yellow: #facc15;
+    --red: #f87171;
+    --accent: #a78bfa;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* LOGIN */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    gap: 32px;
+  }
+  .login-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 6vw, 2.6rem);
+    text-align: center;
+    line-height: 1.1;
+  }
+  .login-title span { color: var(--accent); }
+  .login-subtitle { color: var(--muted); font-size: 0.95rem; text-align: center; }
+
+  .role-cards {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 480px;
+  }
+  .role-card {
+    flex: 1;
+    min-width: 140px;
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .role-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .role-card .icon { font-size: 2.2rem; margin-bottom: 10px; }
+  .role-card .label { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; }
+  .role-card .desc { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+  .code-input-box {
+    width: 100%;
+    max-width: 360px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .code-input-box label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .code-input-box input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    text-align: center;
+    letter-spacing: 0.15em;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.2s;
+  }
+  .code-input-box input:focus { border-color: var(--accent); }
+  .btn {
+    padding: 14px 28px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { color: var(--text); border-color: var(--text); }
+  .error-msg { color: var(--red); font-size: 0.85rem; text-align: center; }
+
+  /* APP HEADER */
+  #app { display: none; min-height: 100vh; flex-direction: column; }
+  .header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .header-left { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; }
+  .header-left span { color: var(--accent); }
+  .badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .badge-fac { background: rgba(167,139,250,0.15); color: var(--accent); border: 1px solid rgba(167,139,250,0.3); }
+  .badge-part { background: rgba(74,222,128,0.12); color: var(--green); border: 1px solid rgba(74,222,128,0.25); }
+
+  .main { flex: 1; padding: 20px; max-width: 700px; margin: 0 auto; width: 100%; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+  }
+  .section-desc { color: var(--muted); font-size: 0.88rem; margin-bottom: 24px; line-height: 1.5; }
+
+  /* SEMÁFORO — PARTICIPANTE */
+  .semaforo-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .semaforo-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+  }
+  .semaforo-item .item-label {
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+  .semaforo-options {
+    display: flex;
+    gap: 10px;
+  }
+  .semaforo-btn {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    background: var(--bg);
+    color: var(--muted);
+    transition: all 0.18s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .semaforo-btn .dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    margin-bottom: 2px;
+  }
+  .semaforo-btn.verde .dot { background: var(--green); }
+  .semaforo-btn.amarillo .dot { background: var(--yellow); }
+  .semaforo-btn.rojo .dot { background: var(--red); }
+  .semaforo-btn.selected-verde { border-color: var(--green); background: rgba(74,222,128,0.1); color: var(--green); }
+  .semaforo-btn.selected-amarillo { border-color: var(--yellow); background: rgba(250,204,21,0.1); color: var(--yellow); }
+  .semaforo-btn.selected-rojo { border-color: var(--red); background: rgba(248,113,113,0.1); color: var(--red); }
+
+  .submit-area { margin-top: 28px; }
+  .submit-area .btn { width: 100%; }
+  .sent-msg {
+    text-align: center;
+    padding: 28px;
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid rgba(74,222,128,0.3);
+  }
+  .sent-msg .icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .sent-msg p { color: var(--green); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; }
+  .sent-msg small { color: var(--muted); font-size: 0.85rem; display: block; margin-top: 6px; }
+
+  /* FACILITADORA — DASHBOARD */
+  .stats-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .stat-card {
+    flex: 1;
+    min-width: 80px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .stat-card .num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+  }
+  .stat-card .lbl { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+  .stat-card.verde .num { color: var(--green); }
+  .stat-card.amarillo .num { color: var(--yellow); }
+  .stat-card.rojo .num { color: var(--red); }
+  .stat-card.total .num { color: var(--accent); }
+
+  /* RESULTADOS POR PREGUNTA */
+  .results-list { display: flex; flex-direction: column; gap: 14px; }
+  .result-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .result-item .q-label {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    font-size: 0.82rem;
+  }
+  .bar-row .color-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .bar-row .bar-label { width: 68px; flex-shrink: 0; }
+  .bar-track {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+  .bar-fill.verde { background: var(--green); }
+  .bar-fill.amarillo { background: var(--yellow); }
+  .bar-fill.rojo { background: var(--red); }
+  .bar-row .count { color: var(--muted); font-size: 0.8rem; min-width: 22px; text-align: right; }
+
+  /* ALERT STATUS */
+  .alert-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding: 10px 14px;
+    background: rgba(248,113,113,0.06);
+    border-radius: 10px;
+    border: 1px solid rgba(248,113,113,0.15);
+    margin-top: 8px;
+  }
+  .alert-item .dot-r { width: 8px; height: 8px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+
+  .btn-clear {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.8rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  .btn-clear:hover { color: var(--red); border-color: var(--red); }
+
+  .waiting-msg {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .waiting-msg .spinner {
+    width: 32px; height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .connection-bar {
+    font-size: 0.75rem;
+    padding: 6px 14px;
+    text-align: center;
+    font-weight: 500;
+  }
+  .conn-ok { background: rgba(74,222,128,0.1); color: var(--green); }
+  .conn-err { background: rgba(248,113,113,0.1); color: var(--red); }
+
+  .tab-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    background: var(--card);
+    border-radius: 12px;
+    padding: 6px;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background: transparent;
+    color: var(--muted);
+    transition: all 0.18s;
+  }
+  .tab-btn.active { background: var(--bg); color: var(--text); }
+
+  .hidden { display: none !important; }
 </style>
 </head>
 <body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div>
+    <div class="login-title">Comunicación<br>que <span>Cuida</span></div>
+    <p class="login-subtitle" style="margin-top:8px;">Taller 3 · El equipo somos nosotras</p>
+  </div>
+
+  <div class="role-cards" id="role-selector">
+    <div class="role-card" onclick="selectRole('facilitadora')">
+      <div class="icon">🎯</div>
+      <div class="label">Facilitadora</div>
+      <div class="desc">Panel de gestión</div>
+    </div>
+    <div class="role-card" onclick="selectRole('participante')">
+      <div class="icon">🌿</div>
+      <div class="label">Participante</div>
+      <div class="desc">Ingresar con código</div>
+    </div>
+  </div>
+
+  <div class="code-input-box hidden" id="code-box">
+    <label id="code-label">Código de acceso</label>
+    <input type="text" id="code-input" placeholder="••••••" autocomplete="off" maxlength="20"
+      onkeydown="if(event.key==='Enter') submitCode()">
+    <div class="error-msg hidden" id="error-msg">Código incorrecto. Intentá de nuevo.</div>
+    <button class="btn btn-primary" onclick="submitCode()">Entrar</button>
+    <button class="btn btn-secondary" onclick="backToRoles()">Volver</button>
+  </div>
+</div>
+
+<!-- APP -->
 <div id="app">
-
-<div class="scr on" id="s-inicio">
-  <div class="hdr">
-    <div style="font-size:11px;font-weight:600;color:#aaccff;letter-spacing:.08em;text-transform:uppercase">Asistencia Pública SMT</div>
-    <h1>Comunicación<br>que cuida</h1>
-    <p>Pizarra colaborativa · Ciclo de talleres</p>
+  <div id="conn-bar" class="connection-bar conn-ok">● Conectada</div>
+  <div class="header">
+    <div class="header-left">Com. que <span>Cuida</span> · T3</div>
+    <span class="badge" id="role-badge"></span>
   </div>
-  <div class="cnt">
-    <p style="font-size:14px;color:#6b7280;margin-bottom:18px;line-height:1.6">¿Cómo vas a participar?</p>
-    <button class="tbtn" onclick="go('s-fac-login')">
-      <div class="tnum" style="background:#1a1a2e">F</div>
-      <div class="tinfo"><strong>Facilitadora</strong><span>Controlo el taller · acceso con contraseña</span></div>
-    </button>
-    <button class="tbtn" onclick="go('s-par-login')">
-      <div class="tnum">P</div>
-      <div class="tinfo"><strong>Participante</strong><span>Ingreso con mi código personal</span></div>
-    </button>
-  </div>
+  <div class="main" id="main-content"></div>
 </div>
 
-<div class="scr" id="s-fac-login">
-  <div class="hdr"><div class="hdrbadge hf">Facilitadora</div><h1>Acceso</h1></div>
-  <div class="cnt">
-    <div id="fac-status"></div>
-    <div class="card">
-      <div class="lbl">Contraseña</div>
-      <input type="password" id="fac-pass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')facLogin()">
-      <button class="pbtn" style="margin-top:12px" onclick="facLogin()">Entrar</button>
-      <p class="errtxt" id="fac-err">Contraseña incorrecta</p>
-    </div>
-    <button class="sbtn" onclick="go('s-inicio')">Volver</button>
-  </div>
-</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import { getDatabase, ref, set, onValue, push, remove, get } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
 
-<div class="scr" id="s-fac-main">
-  <div class="hdr">
-    <div class="hdrbadge hf">Facilitadora</div>
-    <h1>Panel de control</h1>
-    <p id="fac-estado-txt">Sin taller activo</p>
-  </div>
-  <div class="cnt">
-    <div class="tabs">
-      <button class="tab on" id="ftab-talleres" onclick="ftab('talleres')">Talleres</button>
-      <button class="tab" id="ftab-codigos" onclick="ftab('codigos')">Códigos</button>
-      <button class="tab" id="ftab-semaforo" onclick="ftab('semaforo')">Semáforo</button>
-      <button class="tab" id="ftab-diagnostico" onclick="ftab('diagnostico')">Diagnóstico</button>
-    </div>
-    <div id="ft-talleres"><div id="lista-talleres"></div></div>
-    <div id="ft-codigos" style="display:none">
-      <div class="card">
-        <div class="lbl">Códigos activos</div>
-        <div class="codlist" id="codlist"></div>
-      </div>
-      <div class="card">
-        <div class="lbl">Agregar código</div>
-        <input type="text" id="nuevo-cod" placeholder="ej: AZUL, P1..." onkeydown="if(event.key==='Enter')agregarCod()">
-        <button class="pbtn" style="margin-top:10px" onclick="agregarCod()">Agregar</button>
-      </div>
-    </div>
-    <div id="ft-semaforo" style="display:none">
-      <div class="card">
-        <div class="lbl">Situaciones — Semáforo T3</div>
-        <p style="font-size:13px;color:#6b7280;margin-bottom:10px;line-height:1.5">Cargá entre 15 y 20 situaciones antes del Taller 3.</p>
-        <div id="sem-lista-fac"></div>
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <input type="text" id="sem-nueva" placeholder="Nueva situación..." style="flex:1;margin-top:0" onkeydown="if(event.key==='Enter')semAgregar()">
-          <button onclick="semAgregar()" style="background:var(--ap);color:#fff;border:none;border-radius:var(--r2);padding:11px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="lbl">Control del semáforo</div>
-        <button class="pbtn" onclick="semActivar()">Activar semáforo para el grupo</button>
-        <button class="sbtn" onclick="semDesactivar()">Desactivar semáforo</button>
-      </div>
-      <div class="card" id="sem-result-fac">
-        <div class="lbl" style="margin-bottom:10px">Resultados en vivo</div>
-        <div class="tabs">
-          <button class="tab on" id="semtab-col" onclick="semFacTab('col')">Colectivo</button>
-          <button class="tab" id="semtab-ind" onclick="semFacTab('ind')">Individual</button>
-        </div>
-        <div id="sem-fac-col"></div>
-        <div id="sem-fac-ind" style="display:none"></div>
-      </div>
-    </div>
-    <div id="ft-diagnostico" style="display:none"><div id="fac-diag-content"></div></div>
-  </div>
-</div>
-
-<div class="scr" id="s-fac-taller">
-  <div class="hdr">
-    <button class="bbtn" onclick="go('s-fac-main')">← Panel</button>
-    <div class="hdrbadge hf">Facilitadora</div>
-    <h1 id="fac-t-titulo"></h1>
-    <div class="pbar"><div class="pfill" id="fac-pbar"></div></div>
-  </div>
-  <div class="cnt">
-    <div class="tabs">
-      <button class="tab on" id="fttab-sit" onclick="fttab('sit')">Situación</button>
-      <button class="tab" id="fttab-muro" onclick="fttab('muro')">Pizarra</button>
-      <button class="tab" id="fttab-diag" onclick="fttab('diag')">Diagnóstico</button>
-    </div>
-    <div id="ftt-sit">
-      <div class="sitnav" id="fac-sitnav"></div>
-      <div id="fac-sitdetail"></div>
-    </div>
-    <div id="ftt-muro" style="display:none">
-      <div class="counter"><span><span class="dot"></span>Respuestas en vivo</span><strong id="muro-count">0</strong></div>
-      <div id="fac-muro-notas"></div>
-    </div>
-    <div id="ftt-diag" style="display:none"><div id="fac-diag-sit"></div></div>
-  </div>
-</div>
-
-<div class="scr" id="s-par-login">
-  <div class="hdr"><div class="hdrbadge hp">Participante</div><h1>Ingresá tu código</h1><p>Tu facilitadora te asignó un código personal</p></div>
-  <div class="cnt">
-    <div id="par-status"></div>
-    <div class="card">
-      <div class="lbl">Tu código</div>
-      <input class="codinput" id="par-cod" placeholder="CÓDIGO" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
-      <button class="pbtn" style="margin-top:14px" id="par-login-btn">Entrar</button>
-      <p class="errtxt" id="par-err">Código no válido.</p>
-    </div>
-    <button class="sbtn" onclick="go('s-inicio')">Volver</button>
-  </div>
-</div>
-
-<div class="scr" id="s-par-espera">
-  <div class="hdr"><div class="hdrbadge hp">Participante</div><h1 id="par-espera-cod"></h1><p>Esperando que la facilitadora active el taller</p></div>
-  <div class="cnt">
-    <div class="card" style="text-align:center;padding:30px 16px">
-      <div style="font-size:32px;margin-bottom:12px">⏳</div>
-      <p style="font-size:14px;color:#6b7280;line-height:1.6">La situación aparecerá acá automáticamente.</p>
-    </div>
-    <p style="font-size:12px;color:#aaa;text-align:center"><span class="dot"></span>Conectada a Firebase</p>
-  </div>
-</div>
-
-<div class="scr" id="s-par-activa">
-  <div class="hdr">
-    <div class="hdrbadge hp">Participante</div>
-    <h1 id="par-taller-n"></h1>
-    <p id="par-sit-n" style="color:#aaccff;font-size:13px;margin-top:3px"></p>
-    <div class="pbar"><div class="pfill" id="par-pbar"></div></div>
-  </div>
-  <div class="cnt">
-    <div id="par-sit-card"></div>
-    <div class="tabs">
-      <button class="tab on" id="ptab-escribir" onclick="partab('escribir')">Escribir</button>
-      <button class="tab" id="ptab-pizarra" onclick="partab('pizarra')">Pizarra del grupo</button>
-    </div>
-    <div id="pt-escribir">
-      <div id="par-input-area">
-        <textarea id="par-resp" placeholder="Escribí tu respuesta acá..." rows="4"></textarea>
-        <button class="pbtn" onclick="enviarResp()">Enviar respuesta</button>
-      </div>
-      <div id="par-sent" style="display:none">
-        <div class="sent">¡Respuesta enviada!</div>
-        <button class="pbtn" style="margin-top:10px" onclick="partab('pizarra')">Ver pizarra del grupo</button>
-      </div>
-    </div>
-    <div id="pt-pizarra" style="display:none">
-      <div class="counter"><span><span class="dot"></span>Respuestas del grupo</span><strong id="par-muro-count">0</strong></div>
-      <div id="par-muro-notas"></div>
-      <p style="font-size:12px;color:#6b7280;margin-top:8px;text-align:center">Anónimas para el grupo</p>
-    </div>
-  </div>
-</div>
-
-<div class="scr" id="s-par-semaforo">
-  <div class="hdr">
-    <div class="hdrbadge hp">Participante</div>
-    <h1>Taller 3 — El semáforo</h1>
-    <p style="color:#aaccff;font-size:13px;margin-top:3px">Clasificá cada situación según cómo la ves</p>
-  </div>
-  <div class="cnt">
-    <div style="background:#fff8e0;border:1px solid #f4dc00;border-radius:var(--r2);padding:12px 14px;font-size:13px;color:#7a5c00;margin-bottom:14px;line-height:1.5">Tocá una tarjeta y elegí su color. Podés cambiar antes de confirmar.</div>
-    <div id="sem-par-pendientes-wrap">
-      <div class="lbl" style="margin-bottom:8px">Tarjetas para clasificar</div>
-      <div id="sem-par-pendientes"></div>
-    </div>
-    <div id="sem-par-sel-wrap" style="display:none">
-      <div class="lbl" style="margin-bottom:8px">Tarjeta seleccionada</div>
-      <div class="sem-sel" id="sem-par-sel-txt"></div>
-      <div style="display:flex;gap:8px;margin-bottom:14px">
-        <button class="sem-btn" style="background:#dcfce7;color:#166534" onclick="semParClasificar('verde')">VERDE</button>
-        <button class="sem-btn" style="background:#fef9c3;color:#92400e" onclick="semParClasificar('amarillo')">AMARILLO</button>
-        <button class="sem-btn" style="background:#fee2e2;color:#991b1b" onclick="semParClasificar('rojo')">ROJO</button>
-      </div>
-      <button class="sbtn" style="margin-top:0" onclick="semParDesel()">← Volver</button>
-    </div>
-    <div class="sem-zona verde">
-      <div class="sem-zona-hdr"><div class="sem-circ verde"></div><span class="sem-zlbl verde">VERDE — Funciona bien</span></div>
-      <div id="sem-zona-verde"></div>
-    </div>
-    <div class="sem-zona amarillo">
-      <div class="sem-zona-hdr"><div class="sem-circ amarillo"></div><span class="sem-zlbl amarillo">AMARILLO — Me preocupa</span></div>
-      <div id="sem-zona-amarillo"></div>
-    </div>
-    <div class="sem-zona rojo">
-      <div class="sem-zona-hdr"><div class="sem-circ rojo"></div><span class="sem-zlbl rojo">ROJO — Hay que cambiar</span></div>
-      <div id="sem-zona-rojo"></div>
-    </div>
-    <div id="sem-par-finalizar" style="display:none">
-      <button class="pbtn" onclick="semParEnviar()">Confirmar mi clasificación</button>
-    </div>
-    <div id="sem-par-enviado" style="display:none">
-      <div class="sent">¡Clasificación enviada!</div>
-      <div style="margin-top:16px" id="sem-par-grupo"></div>
-    </div>
-  </div>
-</div>
-
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script>
-const FAC_PASS = "AP2026";
-const TALLERES = [
-  {id:1,nombre:"El primer eslabón",sub:"Calidad del trato",sits:[
-    {t:"Orden vencida",e:"Un paciente llega con una orden médica vencida hace 15 días. Está alterado porque vino desde lejos.",c:"¿Cómo le explicarían la situación sin que sienta que lo están rechazando?"},
-    {t:"Llegada tarde",e:"Un paciente llega 25 minutos después de su turno. Insiste en que no puede volver otro día.",c:"¿Cómo comunican la imposibilidad de atenderlo sin que escale?"},
-    {t:"Receta vencida",e:"Una señora mayor presenta una receta vencida para retirar medicación crónica.",c:"¿Cómo explican el procedimiento sin que sienta que la envían de vuelta a cero?"},
-    {t:"Estudio sin orden",e:"Un paciente pide una radiografía porque el médico del trabajo lo pidió de palabra.",c:"¿Cómo comunican la respuesta sin que el paciente se sienta discriminado?"},
-    {t:"Cobertura no habilitada",e:"Un paciente llega con obra social pero la cobertura no está habilitada. Amenaza con quejarse.",c:"¿Cómo manejan la información técnica sin entrar en una discusión?"}
-  ]},
-  {id:2,nombre:"Misma cancha, mismo arco",sub:"Unificación de criterios",sits:[
-    {t:"Respuestas inconsistentes",e:"Una paciente vuelve porque ayer le dijeron algo diferente. Dice que cada una le dice una cosa distinta.",c:"¿Por qué pasa esto? ¿Qué necesitaría el equipo para que no vuelva a ocurrir?"},
-    {t:"¿Quién decide?",e:"Llega un pedido que no está claro si pueden resolver desde admisión o requiere al médico.",c:"¿Cómo deciden qué hacer?"},
-    {t:"El turno doble",e:"Dos pacientes aparecen con turno para el mismo horario. Hay un error en el sistema.",c:"¿Cómo manejan la situación con los pacientes?"},
-    {t:"El protocolo que no existe",e:"Surge una situación frecuente que nadie documentó. Cada una lo resuelve a su modo.",c:"¿Cuáles son las situaciones que necesitarían un criterio escrito?"}
-  ]},
-  {id:3,nombre:"El equipo somos nosotras",sub:"Semáforo + organización",sits:[
-    {t:"Después del semáforo",e:"Mirá las situaciones que clasificaste. Pensá cuál es la que más te preocupa.",c:"¿Qué cambio concreto propondrías para la situación que pusiste en rojo?"}
-  ]},
-  {id:4,nombre:"Con el médico también se habla",sub:"Comunicación con el equipo médico",sits:[
-    {t:"El paciente sin turno",e:"Un paciente insiste en hablar con el médico sin turno porque es urgente.",c:"¿Qué le dicen al paciente? ¿Y al médico?"},
-    {t:"La orden poco clara",e:"Un médico dejó una indicación que admisión no entiende. Tiene fama de responder mal.",c:"¿Cómo se lo plantean para que no escale?"},
-    {t:"El pedido que excede el rol",e:"Un médico pide a admisión algo que no corresponde a sus funciones.",c:"¿Cómo ponen ese límite sin dañar el vínculo?"},
-    {t:"La queja al médico",e:"Un médico llega molesto porque un paciente dijo que lo trataron mal.",c:"¿Cómo manejan esa conversación?"}
-  ]},
-  {id:5,nombre:"Hablar bien es trabajar bien",sub:"Comunicación sin ruido",sits:[
-    {t:"El mensaje que se deformó",e:"Una indicación pasó por cuatro personas y llegó diferente a lo original.",c:"¿Qué técnica simple lo hubiera evitado?"},
-    {t:"La urgencia mal comunicada",e:"Una urgencia requería un mensaje rápido pero se usaron demasiadas palabras.",c:"¿Cómo se comunica una urgencia de forma precisa?"},
-    {t:"¿Entendiste?",e:"Le preguntás a un paciente si entendió. Dice que sí. Después no entendió nada.",c:"¿Cómo verificarías realmente que el mensaje llegó?"},
-    {t:"Cierre del ciclo",e:"Llegamos al final de los cinco talleres.",c:"¿Cuál es el aprendizaje más valioso que te llevás?"}
-  ]}
-];
-
-firebase.initializeApp({
+const firebaseConfig = {
   apiKey: "AIzaSyCkLolpDbT5x8cARqRvb4OfSLQ_bGrqOEE",
   authDomain: "ap-taller.firebaseapp.com",
   databaseURL: "https://ap-taller-default-rtdb.firebaseio.com",
@@ -364,466 +428,288 @@ firebase.initializeApp({
   storageBucket: "ap-taller.firebasestorage.app",
   messagingSenderId: "457620868871",
   appId: "1:457620868871:web:9fd625c23356eef3993fa2"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ——— CONFIG ———
+const PASS_FAC = "AP2026";
+const CODES_PART = ["VERDE", "AZUL", "ROJA", "AMARILLA", "NARANJA", "BLANCA", "VIOLETA", "ROSA"];
+
+const PREGUNTAS = [
+  { id: "q1", texto: "¿Cómo está la comunicación entre nosotras en el día a día?" },
+  { id: "q2", texto: "¿Cómo nos organizamos cuando hay mucho trabajo o presión?" },
+  { id: "q3", texto: "¿Cómo manejamos las diferencias de criterio entre nosotras?" },
+  { id: "q4", texto: "¿Cómo es el ambiente de trabajo en general?" },
+  { id: "q5", texto: "¿Cómo nos apoyamos cuando alguien tiene una situación difícil con un paciente?" },
+  { id: "q6", texto: "¿Cómo está el momento del desayuno como espacio de equipo?" },
+];
+
+let currentRole = null;
+let currentCode = null;
+let responseRef = null;
+
+// ——— CONNECTION STATUS ———
+const connRef = ref(db, ".info/connected");
+onValue(connRef, (snap) => {
+  const bar = document.getElementById("conn-bar");
+  if (snap.val() === true) {
+    bar.textContent = "● Conectada";
+    bar.className = "connection-bar conn-ok";
+  } else {
+    bar.textContent = "○ Sin conexión — revisá tu señal";
+    bar.className = "connection-bar conn-err";
+  }
 });
-const db = firebase.database();
 
-let parCod = null;
-let semParSelIdx = null;
-let semParClasif = {};
+// ——— ROLE SELECTION ———
+window.selectRole = (role) => {
+  currentRole = role;
+  document.getElementById("role-selector").classList.add("hidden");
+  const box = document.getElementById("code-box");
+  box.classList.remove("hidden");
+  document.getElementById("code-label").textContent =
+    role === "facilitadora" ? "Contraseña de facilitadora" : "Tu código de color";
+  document.getElementById("code-input").placeholder = role === "facilitadora" ? "Contraseña" : "Ej: VERDE";
+  document.getElementById("code-input").focus();
+};
 
-const $ = id => document.getElementById(id);
+window.backToRoles = () => {
+  document.getElementById("code-box").classList.add("hidden");
+  document.getElementById("role-selector").classList.remove("hidden");
+  document.getElementById("error-msg").classList.add("hidden");
+  document.getElementById("code-input").value = "";
+};
 
-window.addEventListener('DOMContentLoaded', function(){
-  const input = document.getElementById('par-cod');
-  if(input){
-    input.addEventListener('input', function(){
-      const pos = this.selectionStart;
-      this.value = this.value.toUpperCase();
-      this.setSelectionRange(pos, pos);
-    });
-    input.addEventListener('keydown', function(e){
-      if(e.key === 'Enter') parLogin();
-    });
+window.submitCode = () => {
+  const val = document.getElementById("code-input").value.trim().toUpperCase();
+  const err = document.getElementById("error-msg");
+  if (currentRole === "facilitadora") {
+    if (val === PASS_FAC) { enterApp("facilitadora", "FAC"); }
+    else { err.classList.remove("hidden"); }
+  } else {
+    if (CODES_PART.includes(val)) { enterApp("participante", val); }
+    else { err.classList.remove("hidden"); }
   }
-  const btn = document.getElementById('par-login-btn');
-  if(btn) btn.addEventListener('click', parLogin);
-});
+};
 
-function go(id){
-  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
-  $(id).classList.add('on'); window.scrollTo(0,0);
+function enterApp(role, code) {
+  currentRole = role;
+  currentCode = code;
+  document.getElementById("login-screen").style.display = "none";
+  const appEl = document.getElementById("app");
+  appEl.style.display = "flex";
+  appEl.style.flexDirection = "column";
+  document.getElementById("role-badge").textContent = role === "facilitadora" ? "Facilitadora" : code;
+  document.getElementById("role-badge").className = "badge " + (role === "facilitadora" ? "badge-fac" : "badge-part");
+  if (role === "facilitadora") renderFacilitadora();
+  else renderParticipante(code);
 }
 
-function dbRef(path){ return db.ref(path); }
+// ——— PARTICIPANTE ———
+function renderParticipante(code) {
+  const main = document.getElementById("main-content");
+  const key = "t3_respuestas/" + code;
+  responseRef = ref(db, key);
 
-// ── FAC ──
-function facLogin(){
-  if($('fac-pass').value.trim().toUpperCase()===FAC_PASS){
-    $('fac-err').style.display='none';
-    cargarFacMain();
-    go('s-fac-main');
-    facEscuchar();
-  } else { $('fac-err').style.display='block'; }
-}
-
-async function cargarFacMain(){
-  const snap = await dbRef('estado').get();
-  const est = snap.val()||{};
-  const t = est.tallerActivo ? TALLERES.find(x=>x.id===est.tallerActivo) : null;
-  $('fac-estado-txt').textContent = t ? `Taller activo: T${t.id} — ${t.nombre}` : 'Sin taller activo';
-  $('lista-talleres').innerHTML = TALLERES.map(t=>`
-    <button class="tbtn ${est.tallerActivo===t.id?'sel':''}" onclick="activarTaller(${t.id})">
-      <div class="tnum">${t.id}</div>
-      <div class="tinfo"><strong>${t.nombre}</strong><span>${t.sub}</span></div>
-    </button>`).join('');
-  cargarCodigos();
-  cargarSemLista();
-}
-
-async function cargarCodigos(){
-  const snap = await dbRef('codigos').get();
-  const cods = snap.val() || ['AZUL','VERDE','ROJO','SOL','LUNA'];
-  $('codlist').innerHTML = cods.map(c=>`
-    <div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #e2e8f0;border-radius:var(--r2);padding:10px 14px;margin-bottom:7px">
-      <span style="font-size:14px;font-weight:700;letter-spacing:.06em">${c}</span>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span class="tag tok">activo</span>
-        <button onclick="eliminarCod('${c}')" style="background:none;border:none;cursor:pointer;color:#999;font-size:18px;padding:0;line-height:1">×</button>
-      </div>
-    </div>`).join('');
-}
-
-async function agregarCod(){
-  const v=$('nuevo-cod').value.trim().toUpperCase(); if(!v)return;
-  const snap=await dbRef('codigos').get();
-  const cods=snap.val()||['AZUL','VERDE','ROJO','SOL','LUNA'];
-  if(!cods.includes(v)){cods.push(v);await dbRef('codigos').set(cods);}
-  $('nuevo-cod').value=''; cargarCodigos();
-}
-
-async function eliminarCod(c){
-  const snap=await dbRef('codigos').get();
-  const cods=(snap.val()||[]).filter(x=>x!==c);
-  await dbRef('codigos').set(cods); cargarCodigos();
-}
-
-async function activarTaller(id){
-  await dbRef('estado').update({tallerActivo:id, sitActiva:0});
-  cargarFacTaller(id,0);
-  go('s-fac-taller');
-}
-
-async function cargarFacTaller(tid,sit){
-  const t=TALLERES.find(x=>x.id===tid);
-  $('fac-t-titulo').textContent=`T${t.id}: ${t.nombre}`;
-  $('fac-pbar').style.width=Math.round((sit+1)/t.sits.length*100)+'%';
-  $('fac-sitnav').innerHTML=t.sits.map((s,i)=>
-    `<button class="sdot ${i===sit?'on':''}" onclick="cambiarSit(${i})">${i+1}</button>`).join('');
-  const s=t.sits[sit];
-  $('fac-sitdetail').innerHTML=`
-    <div class="scard">
-      <div class="shdr"><div class="snum">${sit+1}</div><div class="stitle">${s.t}</div></div>
-      <div class="sbody"><div class="slbl">¿Qué pasó?</div><div class="stxt">${s.e}</div></div>
-      <div class="sconsigna">${s.c}</div>
-    </div>
-    <button class="pbtn" onclick="activarSit()">Activar para el grupo</button>`;
-}
-
-async function cambiarSit(i){
-  const snap=await dbRef('estado').get();
-  const est=snap.val()||{};
-  await dbRef('estado').update({sitActiva:i});
-  cargarFacTaller(est.tallerActivo,i);
-}
-
-function activarSit(){
-  alert('Situación activada. Las participantes ya pueden responder.');
-}
-
-function facEscuchar(){
-  dbRef('respuestas').on('value', snap=>{
-    if(!document.querySelector('#ftt-muro[style=""]')&&!document.querySelector('#ftt-muro:not([style])')){ return; }
-    if($('ftt-muro').style.display==='block') actualizarMuroFac(snap.val());
-  });
-  dbRef('estado').on('value', snap=>{
-    const est=snap.val()||{};
-    if(document.querySelector('#s-fac-taller.on')){
-      const t=TALLERES.find(x=>x.id===est.tallerActivo);
-      if(t) cargarFacTaller(t.id, est.sitActiva||0);
-    }
-  });
-  dbRef('semClasificaciones').on('value', snap=>{
-    if(document.querySelector('#ft-semaforo')?.style.display==='block') renderSemFac(snap.val());
-  });
-}
-
-async function actualizarMuroFac(data){
-  const snap=await dbRef('estado').get();
-  const est=snap.val()||{};
-  const obj=(data?.[est.tallerActivo]||{})[est.sitActiva]||{};
-  const items=Object.entries(obj);
-  $('muro-count').textContent=items.length;
-  $('fac-muro-notas').innerHTML=items.length===0
-    ?'<div class="empty">Las respuestas aparecerán acá en tiempo real.</div>'
-    :items.map(([cod,txt])=>`<div class="nota wn"><div class="nn">${cod}</div>${txt}</div>`).join('');
-}
-
-async function fttab(tab){
-  ['sit','muro','diag'].forEach(t=>{
-    $('fttab-'+t).classList.toggle('on',t===tab);
-    $('ftt-'+t).style.display=t===tab?'block':'none';
-  });
-  if(tab==='muro'){const s=await dbRef('respuestas').get();actualizarMuroFac(s.val());}
-  if(tab==='diag'){
-    const snap=await dbRef('estado').get();
-    const est=snap.val()||{};
-    const s=await dbRef('respuestas').get();
-    const data=s.val()||{};
-    const t=TALLERES.find(x=>x.id===est.tallerActivo);
-    if(!t)return;
-    const obj=(data[est.tallerActivo]||{})[est.sitActiva]||{};
-    const items=Object.entries(obj);
-    $('fac-diag-sit').innerHTML=`<div class="lbl" style="margin-bottom:10px">Sit. ${(est.sitActiva||0)+1} — ${t.sits[est.sitActiva||0]?.t||''}</div>`
-      +(items.length===0?'<div class="empty">Sin respuestas aún.</div>'
-      :items.map(([cod,txt])=>`<div class="diagcard"><div class="diagtit">${cod}</div><div class="diagtxt">${txt}</div></div>`).join(''));
-  }
-}
-
-async function ftab(tab){
-  ['talleres','codigos','semaforo','diagnostico'].forEach(t=>{
-    $('ftab-'+t).classList.toggle('on',t===tab);
-    $('ft-'+t).style.display=t===tab?'block':'none';
-  });
-  if(tab==='codigos') cargarCodigos();
-  if(tab==='semaforo'){cargarSemLista();const s=await dbRef('semClasificaciones').get();renderSemFac(s.val());}
-  if(tab==='diagnostico') cargarDiagGlobal();
-}
-
-async function cargarDiagGlobal(){
-  const [r1,r2,r3]=await Promise.all([dbRef('respuestas').get(),dbRef('semClasificaciones').get(),dbRef('codigos').get()]);
-  const resp=r1.val()||{}, semC=r2.val()||{}, cods=r3.val()||['AZUL','VERDE','ROJO','SOL','LUNA'];
-  const semSnap=await dbRef('semSituaciones').get(); const semSits=semSnap.val()||[];
-  $('fac-diag-content').innerHTML=cods.map(cod=>{
-    const items=[];
-    Object.keys(resp).forEach(tid=>{
-      const t=TALLERES.find(x=>x.id==tid);if(!t)return;
-      Object.keys(resp[tid]||{}).forEach(si=>{
-        const txt=resp[tid][si]?.[cod];
-        if(txt)items.push({lbl:`${t.nombre} · ${t.sits[si]?.t||''}`,txt});
-      });
-    });
-    Object.entries(semC[cod]||{}).forEach(([idx,color])=>{
-      items.push({lbl:`Semáforo · ${semSits[idx]||''}`,txt:`→ ${color.toUpperCase()}`});
-    });
-    return `<div class="card" style="margin-bottom:12px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div class="lbl">${cod}</div><span class="tag tok">${items.length} entradas</span>
-      </div>
-      ${items.length===0?'<p style="font-size:13px;color:#6b7280">Sin respuestas aún.</p>'
-        :items.map(r=>`<div class="diagcard"><div class="diagtit">${r.lbl}</div><div class="diagtxt">${r.txt}</div></div>`).join('')}
-    </div>`;
-  }).join('');
-}
-
-// ── SEMÁFORO FAC ──
-async function cargarSemLista(){
-  const snap=await dbRef('semSituaciones').get();
-  const sits=snap.val()||[];
-  $('sem-lista-fac').innerHTML=sits.length===0
-    ?'<p style="font-size:13px;color:#6b7280;margin-bottom:8px">No hay situaciones cargadas aún.</p>'
-    :sits.map((s,i)=>`
-      <div style="display:flex;align-items:center;gap:8px;background:#f8faff;border:1px solid #e2e8f0;border-radius:var(--r2);padding:10px 12px;margin-bottom:7px">
-        <span style="flex:1;font-size:13px">${i+1}. ${s}</span>
-        <button onclick="semEliminar(${i})" style="background:none;border:none;cursor:pointer;color:#999;font-size:16px;padding:0;line-height:1">×</button>
-      </div>`).join('');
-}
-
-async function semAgregar(){
-  const v=$('sem-nueva').value.trim();if(!v)return;
-  const snap=await dbRef('semSituaciones').get();
-  const sits=snap.val()||[];
-  if(sits.length>=20){alert('Máximo 20 situaciones.');return;}
-  sits.push(v); await dbRef('semSituaciones').set(sits);
-  $('sem-nueva').value=''; cargarSemLista();
-}
-
-async function semEliminar(i){
-  const snap=await dbRef('semSituaciones').get();
-  const sits=snap.val()||[]; sits.splice(i,1);
-  await dbRef('semSituaciones').set(sits); cargarSemLista();
-}
-
-async function semActivar(){
-  const snap=await dbRef('semSituaciones').get();
-  if(!snap.val()||snap.val().length<3){alert('Cargá al menos 3 situaciones.');return;}
-  await dbRef('estado/semActivo').set(true);
-  alert('Semáforo activado.');
-}
-
-async function semDesactivar(){
-  await dbRef('estado/semActivo').set(false);
-}
-
-async function renderSemFac(clasifs){
-  const snap=await dbRef('semSituaciones').get();
-  const sits=snap.val()||[];
-  const totales=sits.map((sit,i)=>{
-    const v={verde:0,amarillo:0,rojo:0};
-    Object.values(clasifs||{}).forEach(c=>{if(c&&c[i])v[c[i]]++;});
-    return{sit,v};
-  }).sort((a,b)=>(b.v.rojo+b.v.amarillo)-(a.v.rojo+a.v.amarillo));
-  $('sem-fac-col').innerHTML=totales.length===0?'<div class="empty">Sin clasificaciones aún.</div>'
-    :totales.map(({sit,v})=>{
-      const tot=v.verde+v.amarillo+v.rojo||1;
-      return `<div class="sem-res-item">
-        <div style="flex:1"><div style="font-size:13px;line-height:1.4">${sit}</div>
-          <div class="sem-barra" style="margin-top:5px">
-            <div class="sem-bv" style="width:${Math.round(v.verde/tot*100)}%"></div>
-            <div class="sem-ba" style="width:${Math.round(v.amarillo/tot*100)}%"></div>
-            <div class="sem-br" style="width:${Math.round(v.rojo/tot*100)}%"></div>
-          </div></div>
-        <div style="display:flex;gap:4px">
-          <span class="sem-chip verde">${v.verde}V</span>
-          <span class="sem-chip amarillo">${v.amarillo}A</span>
-          <span class="sem-chip rojo">${v.rojo}R</span>
-        </div></div>`;
-    }).join('');
-  const codsSnap=await dbRef('codigos').get();
-  const cods=codsSnap.val()||['AZUL','VERDE','ROJO','SOL','LUNA'];
-  $('sem-fac-ind').innerHTML=cods.map(cod=>{
-    const cl=(clasifs||{})[cod]||{};
-    const items=Object.entries(cl);
-    return `<div class="card" style="margin-bottom:12px">
-      <div class="lbl" style="margin-bottom:8px">${cod}</div>
-      ${items.length===0?'<p style="font-size:13px;color:#6b7280">Sin clasificar aún.</p>'
-        :items.map(([idx,color])=>`<div class="sem-tc ${color}">${sits[idx]||''}</div>`).join('')}
-    </div>`;
-  }).join('');
-}
-
-function semFacTab(tab){
-  ['col','ind'].forEach(t=>{$('semtab-'+t).classList.toggle('on',t===tab);$('sem-fac-'+t).style.display=t===tab?'block':'none';});
-}
-
-// ── PAR ──
-async function parLogin(){
-  const cod=String($('par-cod').value||'').trim().toUpperCase();
-  $('par-status').className='status';
-  $('par-status').textContent='Verificando...';
-  $('par-status').style.display='block';
-  try {
-    const snap=await dbRef('codigos').get();
-    const cods=snap.val()||['AZUL','VERDE','ROJO','SOL','LUNA'];
-    if(!cods.includes(cod)){
-      $('par-err').style.display='block';
-      $('par-status').style.display='none';
-      return;
-    }
-    $('par-err').style.display='none';
-    parCod=cod;
-    $('par-espera-cod').textContent='Código: '+cod;
-    const estSnap=await dbRef('estado').get();
-    const est=estSnap.val()||{};
-    $('par-status').style.display='none';
-    if(est.semActivo){await renderParSem();go('s-par-semaforo');}
-    else if(est.tallerActivo!=null){renderParActiva(est);go('s-par-activa');}
-    else go('s-par-espera');
-    parEscuchar();
-  } catch(e){
-    $('par-status').className='status err';
-    $('par-status').textContent='Error de conexión. Recargá la página.';
-  }
-}
-
-function parEscuchar(){
-  dbRef('estado').on('value', snap=>{
-    const est=snap.val()||{};
-    if(est.semActivo){
-      if(!document.querySelector('#s-par-semaforo.on')){renderParSem();go('s-par-semaforo');}
-    } else if(est.tallerActivo!=null){
-      if(!document.querySelector('#s-par-activa.on')){renderParActiva(est);go('s-par-activa');}
-      else renderParActiva(est);
+  // Check if already responded
+  get(responseRef).then(snap => {
+    if (snap.exists()) {
+      main.innerHTML = alreadySentHTML();
     } else {
-      if(!document.querySelector('#s-par-espera.on'))go('s-par-espera');
+      main.innerHTML = buildParticipanteForm(code);
     }
-  });
-  dbRef('respuestas').on('value', snap=>{
-    if(!document.querySelector('#s-par-activa.on'))return;
-    dbRef('estado').get().then(estSnap=>{
-      const est=estSnap.val()||{};
-      const obj=(snap.val()?.[est.tallerActivo]||{})[est.sitActiva]||{};
-      const items=Object.values(obj);
-      $('par-muro-count').textContent=items.length;
-      $('par-muro-notas').innerHTML=items.length===0
-        ?'<div class="empty">Todavía no hay respuestas. Sé la primera.</div>'
-        :items.map(txt=>`<div class="nota">${txt}</div>`).join('');
-    });
-  });
-  dbRef('semClasificaciones').on('value', snap=>{
-    if(document.querySelector('#s-par-semaforo.on')&&$('sem-par-enviado').style.display==='block'){
-      dbRef('semSituaciones').get().then(s=>renderSemParGrupo(snap.val(),s.val()||[]));
-    }
+  }).catch(() => {
+    main.innerHTML = buildParticipanteForm(code);
   });
 }
 
-async function renderParActiva(est){
-  if(!est){const s=await dbRef('estado').get();est=s.val()||{};}
-  const t=TALLERES.find(x=>x.id===est.tallerActivo);if(!t)return;
-  const s=t.sits[est.sitActiva||0];
-  $('par-taller-n').textContent=`T${t.id}: ${t.nombre}`;
-  $('par-sit-n').textContent=`Situación ${(est.sitActiva||0)+1}: ${s.t}`;
-  $('par-pbar').style.width=Math.round(((est.sitActiva||0)+1)/t.sits.length*100)+'%';
-  $('par-sit-card').innerHTML=`
-    <div class="scard">
-      <div class="shdr"><div class="snum">${(est.sitActiva||0)+1}</div><div class="stitle">${s.t}</div></div>
-      <div class="sbody"><div class="slbl">¿Qué pasó?</div><div class="stxt">${s.e}</div></div>
-      <div class="sconsigna">${s.c}</div>
-    </div>`;
-  const yaSnap=await dbRef(`respuestas/${est.tallerActivo}/${est.sitActiva||0}/${parCod}`).get();
-  const ya=yaSnap.exists();
-  $('par-input-area').style.display=ya?'none':'block';
-  $('par-sent').style.display=ya?'block':'none';
-  if(!ya)$('par-resp').value='';
+function buildParticipanteForm(code) {
+  let html = `
+    <div class="section-title">Semáforo de equipo</div>
+    <p class="section-desc">Para cada situación, marcá cómo la ves: <strong style="color:var(--green)">Verde</strong> (bien), <strong style="color:var(--yellow)">Amarillo</strong> (regular) o <strong style="color:var(--red)">Rojo</strong> (hay que mejorar).</p>
+    <div class="semaforo-grid" id="form-grid">
+  `;
+  PREGUNTAS.forEach(q => {
+    html += `
+      <div class="semaforo-item" id="item-${q.id}">
+        <div class="item-label">${q.texto}</div>
+        <div class="semaforo-options">
+          <button class="semaforo-btn verde" onclick="selectSemaforo('${q.id}','verde',this)">
+            <div class="dot"></div>Verde
+          </button>
+          <button class="semaforo-btn amarillo" onclick="selectSemaforo('${q.id}','amarillo',this)">
+            <div class="dot"></div>Amarillo
+          </button>
+          <button class="semaforo-btn rojo" onclick="selectSemaforo('${q.id}','rojo',this)">
+            <div class="dot"></div>Rojo
+          </button>
+        </div>
+      </div>
+    `;
+  });
+  html += `</div>
+    <div class="submit-area">
+      <button class="btn btn-primary" onclick="submitRespuestas('${code}')">Enviar mi semáforo</button>
+    </div>
+  `;
+  return html;
 }
 
-function partab(tab){
-  ['escribir','pizarra'].forEach(t=>{$('ptab-'+t).classList.toggle('on',t===tab);$('pt-'+t).style.display=t===tab?'block':'none';});
-}
+const selecciones = {};
+window.selectSemaforo = (qid, color, btn) => {
+  selecciones[qid] = color;
+  const item = document.getElementById("item-" + qid);
+  item.querySelectorAll(".semaforo-btn").forEach(b => {
+    b.className = "semaforo-btn " + b.className.split(" ")[1];
+  });
+  btn.className = `semaforo-btn ${color} selected-${color}`;
+};
 
-async function enviarResp(){
-  const txt=$('par-resp').value.trim();if(!txt)return;
-  const estSnap=await dbRef('estado').get();
-  const est=estSnap.val()||{};
-  await dbRef(`respuestas/${est.tallerActivo}/${est.sitActiva||0}/${parCod}`).set(txt);
-  $('par-input-area').style.display='none';
-  $('par-sent').style.display='block';
-}
-
-// ── SEMÁFORO PAR ──
-async function renderParSem(){
-  const snap=await dbRef('semSituaciones').get();
-  const sits=snap.val()||[];
-  const yaSnap=await dbRef(`semClasificaciones/${parCod}`).get();
-  const ya=yaSnap.val();
-  if(ya&&Object.keys(ya).length>0){
-    $('sem-par-pendientes-wrap').style.display='none';
-    $('sem-par-sel-wrap').style.display='none';
-    $('sem-par-finalizar').style.display='none';
-    $('sem-par-enviado').style.display='block';
-    const allSnap=await dbRef('semClasificaciones').get();
-    renderSemParGrupo(allSnap.val(),sits);
+window.submitRespuestas = (code) => {
+  const unanswered = PREGUNTAS.filter(q => !selecciones[q.id]);
+  if (unanswered.length > 0) {
+    alert("Falta marcar " + unanswered.length + " pregunta(s) antes de enviar.");
     return;
   }
-  $('sem-par-enviado').style.display='none';
-  $('sem-par-sel-wrap').style.display='none';
-  const clasif=semParClasif;
-  const pend=sits.filter((_,i)=>!clasif[i]);
-  $('sem-par-pendientes-wrap').style.display='block';
-  $('sem-par-pendientes').innerHTML=pend.length===0
-    ?'<div class="empty">¡Clasificaste todas!</div>'
-    :pend.map(sit=>{const ri=sits.indexOf(sit);return`<div class="sem-tarjeta" onclick="semParSel(${ri})">${sit}</div>`;}).join('');
-  ['verde','amarillo','rojo'].forEach(color=>{
-    const items=Object.entries(clasif).filter(([,c])=>c===color);
-    $(`sem-zona-${color}`).innerHTML=items.map(([idx])=>`<div class="sem-tc ${color}">${sits[idx]||''}</div>`).join('');
+  const data = { codigo: code, timestamp: Date.now(), respuestas: selecciones };
+  set(ref(db, "t3_respuestas/" + code), data)
+    .then(() => {
+      document.getElementById("main-content").innerHTML = alreadySentHTML();
+    })
+    .catch(err => {
+      alert("Hubo un error al enviar. Verificá tu conexión e intentá de nuevo.");
+      console.error(err);
+    });
+};
+
+function alreadySentHTML() {
+  return `
+    <div class="sent-msg">
+      <div class="icon">✅</div>
+      <p>¡Tu semáforo fue enviado!</p>
+      <small>Gracias por participar. La facilitadora está viendo los resultados.</small>
+    </div>
+  `;
+}
+
+// ——— FACILITADORA ———
+function renderFacilitadora() {
+  const main = document.getElementById("main-content");
+  main.innerHTML = `
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tab-results" onclick="showTab('results')">Resultados</button>
+      <button class="tab-btn" id="tab-detail" onclick="showTab('detail')">Por pregunta</button>
+    </div>
+    <div id="panel-results"></div>
+    <div id="panel-detail" class="hidden"></div>
+    <button class="btn-clear" onclick="clearData()">🗑 Limpiar respuestas (inicio de sesión)</button>
+  `;
+  listenData();
+}
+
+function showTab(tab) {
+  document.getElementById("tab-results").className = "tab-btn" + (tab === "results" ? " active" : "");
+  document.getElementById("tab-detail").className = "tab-btn" + (tab === "detail" ? " active" : "");
+  document.getElementById("panel-results").className = tab === "results" ? "" : "hidden";
+  document.getElementById("panel-detail").className = tab === "detail" ? "" : "hidden";
+}
+window.showTab = showTab;
+
+function listenData() {
+  onValue(ref(db, "t3_respuestas"), (snap) => {
+    const data = snap.val() || {};
+    const respuestas = Object.values(data);
+    renderResultsPanel(respuestas);
+    renderDetailPanel(respuestas);
   });
-  $('sem-par-finalizar').style.display=(Object.keys(clasif).length>0&&pend.length===0)?'block':'none';
 }
 
-async function semParSel(idx){
-  semParSelIdx=idx;
-  const snap=await dbRef('semSituaciones').get();
-  const sits=snap.val()||[];
-  $('sem-par-sel-txt').textContent=sits[idx]||'';
-  $('sem-par-pendientes-wrap').style.display='none';
-  $('sem-par-sel-wrap').style.display='block';
+function renderResultsPanel(respuestas) {
+  const panel = document.getElementById("panel-results");
+  if (respuestas.length === 0) {
+    panel.innerHTML = `<div class="waiting-msg"><div class="spinner"></div>Esperando respuestas de las participantes…</div>`;
+    return;
+  }
+
+  // Count totals across all answers
+  let totVerde = 0, totAmarillo = 0, totRojo = 0;
+  respuestas.forEach(r => {
+    Object.values(r.respuestas || {}).forEach(v => {
+      if (v === "verde") totVerde++;
+      else if (v === "amarillo") totAmarillo++;
+      else if (v === "rojo") totRojo++;
+    });
+  });
+
+  // Find red-flagged questions (majority rojo)
+  const rojos = [];
+  PREGUNTAS.forEach(q => {
+    let v=0,a=0,r=0;
+    respuestas.forEach(resp => {
+      const val = resp.respuestas?.[q.id];
+      if (val === "verde") v++;
+      else if (val === "amarillo") a++;
+      else if (val === "rojo") r++;
+    });
+    if (r > v && r > 0) rojos.push({ q, r });
+  });
+
+  let html = `
+    <div class="section-title" style="margin-bottom:4px">Resumen del grupo</div>
+    <p class="section-desc">${respuestas.length} participante${respuestas.length > 1 ? "s" : ""} respondieron</p>
+    <div class="stats-row">
+      <div class="stat-card total"><div class="num">${respuestas.length}</div><div class="lbl">Respuestas</div></div>
+      <div class="stat-card verde"><div class="num">${totVerde}</div><div class="lbl">Verde</div></div>
+      <div class="stat-card amarillo"><div class="num">${totAmarillo}</div><div class="lbl">Amarillo</div></div>
+      <div class="stat-card rojo"><div class="num">${totRojo}</div><div class="lbl">Rojo</div></div>
+    </div>
+  `;
+
+  if (rojos.length > 0) {
+    html += `<div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--red);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">⚠ Para trabajar en el grupo</div>`;
+    rojos.forEach(({q, r}) => {
+      html += `<div class="alert-item"><div class="dot-r"></div>${q.texto} <span style="margin-left:auto;color:var(--red);font-weight:600">${r}🔴</span></div>`;
+    });
+  }
+  panel.innerHTML = html;
 }
 
-function semParDesel(){
-  semParSelIdx=null;
-  $('sem-par-sel-wrap').style.display='none';
-  renderParSem();
+function renderDetailPanel(respuestas) {
+  const panel = document.getElementById("panel-detail");
+  if (respuestas.length === 0) {
+    panel.innerHTML = `<div class="waiting-msg"><div class="spinner"></div>Sin datos todavía…</div>`;
+    return;
+  }
+  let html = `<div class="results-list">`;
+  PREGUNTAS.forEach(q => {
+    let v=0,a=0,r=0;
+    respuestas.forEach(resp => {
+      const val = resp.respuestas?.[q.id];
+      if (val === "verde") v++;
+      else if (val === "amarillo") a++;
+      else if (val === "rojo") r++;
+    });
+    const total = v+a+r || 1;
+    html += `
+      <div class="result-item">
+        <div class="q-label">${q.texto}</div>
+        <div class="bar-row"><div class="color-dot" style="background:var(--green)"></div><div class="bar-label">Verde</div><div class="bar-track"><div class="bar-fill verde" style="width:${Math.round(v/total*100)}%"></div></div><div class="count">${v}</div></div>
+        <div class="bar-row"><div class="color-dot" style="background:var(--yellow)"></div><div class="bar-label">Amarillo</div><div class="bar-track"><div class="bar-fill amarillo" style="width:${Math.round(a/total*100)}%"></div></div><div class="count">${a}</div></div>
+        <div class="bar-row"><div class="color-dot" style="background:var(--red)"></div><div class="bar-label">Rojo</div><div class="bar-track"><div class="bar-fill rojo" style="width:${Math.round(r/total*100)}%"></div></div><div class="count">${r}</div></div>
+      </div>
+    `;
+  });
+  html += `</div>`;
+  panel.innerHTML = html;
 }
 
-function semParClasificar(color){
-  if(semParSelIdx===null)return;
-  semParClasif[semParSelIdx]=color;
-  semParSelIdx=null;
-  renderParSem();
-}
-
-async function semParEnviar(){
-  await dbRef(`semClasificaciones/${parCod}`).set(semParClasif);
-  $('sem-par-finalizar').style.display='none';
-  $('sem-par-pendientes-wrap').style.display='none';
-  $('sem-par-enviado').style.display='block';
-  const [allSnap,sitSnap]=await Promise.all([dbRef('semClasificaciones').get(),dbRef('semSituaciones').get()]);
-  renderSemParGrupo(allSnap.val(),sitSnap.val()||[]);
-}
-
-function renderSemParGrupo(clasifs,sits){
-  const totales=sits.map((sit,i)=>{
-    const v={verde:0,amarillo:0,rojo:0};
-    Object.values(clasifs||{}).forEach(c=>{if(c&&c[i])v[c[i]]++;});
-    return{sit,v};
-  }).filter(x=>x.v.verde+x.v.amarillo+x.v.rojo>0).sort((a,b)=>(b.v.rojo+b.v.amarillo)-(a.v.rojo+a.v.amarillo));
-  $('sem-par-grupo').innerHTML=totales.length===0?''
-    :`<div class="lbl" style="margin-bottom:10px">Resultado del grupo (anónimo)</div>`
-    +totales.map(({sit,v})=>{
-      const tot=v.verde+v.amarillo+v.rojo||1;
-      return `<div class="sem-res-item">
-        <div style="flex:1"><div style="font-size:13px;line-height:1.4">${sit}</div>
-          <div class="sem-barra" style="margin-top:5px">
-            <div class="sem-bv" style="width:${Math.round(v.verde/tot*100)}%"></div>
-            <div class="sem-ba" style="width:${Math.round(v.amarillo/tot*100)}%"></div>
-            <div class="sem-br" style="width:${Math.round(v.rojo/tot*100)}%"></div>
-          </div></div>
-        <div style="display:flex;gap:4px">
-          <span class="sem-chip verde">${v.verde}</span>
-          <span class="sem-chip amarillo">${v.amarillo}</span>
-          <span class="sem-chip rojo">${v.rojo}</span>
-        </div></div>`;
-    }).join('');
-}
+window.clearData = () => {
+  if (confirm("¿Borrar todas las respuestas? Hacé esto solo antes de una nueva sesión.")) {
+    set(ref(db, "t3_respuestas"), null);
+  }
+};
 </script>
 </body>
 </html>
